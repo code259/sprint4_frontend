@@ -1,9 +1,9 @@
 ---
 layout: base
-title: Flocker Social Media Site 
+title: Pawnsy
 search_exclude: true
 hide: true
-# menu: nav/home.html
+menu: nav/home.html
 ---
 
 <style>
@@ -61,18 +61,6 @@ hide: true
             cursor: pointer;
         }
 
-        .hero-text button:first-child {
-            background: black;
-            color: white;
-            border: none;
-        }
-
-        .hero-text button:last-child {
-            background: white;
-            border: 2px solid black;
-            color: black;
-        }
-
         .hero-image img {
             width: 300px;
             border-radius: 10px;
@@ -99,17 +87,32 @@ hide: true
             font-size: 16px;
             color: gray;
         }
+        button {
+            background-color: transparent; /* Transparent background */
+            color: white; /* Text color */
+            border: 2px solid white; /* White border */
+            padding: 10px 20px; /* Add padding for size */
+            font-size: 16px; /* Adjust font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            border-radius: 5px; /* Optional: Rounded corners */
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+        }
+
+        button:hover {
+            background-color: white; /* White background on hover */
+            color: black; /* Black text on hover */
+        }
 </style>
 
 <section class="hero">
         <div class="hero-text">
             <h1>Pawnsly</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at pellentesque dui. Etiam fringilla in tellus id feugiat. Duis nec ornare orci.</p>
+            <p>Pawnsly is a website with a focus in the game of Chess. By using Gemini Integration, Pawnsly can analyze your chess boards and turn any losing situation upside down! </p>
             <button>Sign Up!</button>
             <button>Learn More!</button>
         </div>
         <div class="hero-image">
-            <img src="https://via.placeholder.com/300" alt="Chess Cat">
+            <img src="https://images.unsplash.com/photo-1560174038-da43ac74f01b?q=80&w=2914&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chess Cat">
         </div>
 </section>
 
