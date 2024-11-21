@@ -3,7 +3,7 @@ layout: base
 title: Pawnsy
 search_exclude: true
 hide: true
-# menu: nav/home.html
+menu: nav/home.html
 ---
 
 <style>
@@ -112,7 +112,7 @@ hide: true
             <button>Learn More!</button>
         </div>
         <div class="hero-image">
-            <img src="https://via.placeholder.com/300" alt="Chess Cat">
+            <img src="https://images.unsplash.com/photo-1560174038-da43ac74f01b?q=80&w=2914&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chess Cat">
         </div>
 </section>
 
