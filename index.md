@@ -104,7 +104,7 @@ menu: nav/home.html
 <section class="hero">
         <div class="hero-text">
             <h1>Pawnsly</h1>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla at pellentesque dui. Etiam fringilla in tellus id feugiat. Duis nec ornare orci.</p>
+            <p>Pawnsly is a website with a focus in the game of Chess. By using Gemini Integration, Pawnsly can analyze your chess boards and turn any losing situation upside down! </p>
             <button>Sign Up!</button>
             <button>Learn More!</button>
         </div>
