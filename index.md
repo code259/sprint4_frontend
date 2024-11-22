@@ -109,8 +109,8 @@ menu: nav/home.html
         <div class="hero-text">
             <h1 class="title">Pawnsly</h1>
             <p>Pawnsly is a website with a focus in the game of Chess. By using Gemini Integration, Pawnsly can analyze your chess boards and turn any losing situation upside down! </p>
-            <button>Sign Up!</button>
-            <button>Login!</button>
+            <button id="login-btn">Sign Up!</button>
+            <button id="signup-btn">Login!</button>
         </div>
         <div class="hero-image">
             <img src="https://images.unsplash.com/photo-1560174038-da43ac74f01b?q=80&w=2914&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chess Cat">
@@ -131,6 +131,14 @@ menu: nav/home.html
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 
 <script>
+    signup_btn = document.getElementById('signup-btn').onclick = function () {
+        location.href = "{{site.baseurl}}/login"
+    }
+    login_btn = document.getElementById('login-btn').onclick = function () {
+        location.href = "{{site.baseurl}}/login"
+    }
+
+
     var timeline = gsap.timeline({delay: 0.2});
     timeline.to(".hero-image", {rotation: 360, x: 5, duration: 1})
     .to(".title", {duration: 1, y: -25, ease: 'elastic.out'})
