@@ -107,8 +107,8 @@ menu: nav/home.html
 
 <section class="hero">
         <div class="hero-text">
-            <h1>Pawnsly</h1>
-            <p>Pawnsy is a website with a focus in the game of Chess. By using Gemini Integration, Pawnsy can analyze your chess boards and turn any losing situation upside down! Get started on Pawnsy, our Chess based social media site for our AP Computer Science Principles Sprint 4 Project </p>
+            <h1 class="title">Pawnsly</h1>
+            <p>Pawnsly is a website with a focus in the game of Chess. By using Gemini Integration, Pawnsly can analyze your chess boards and turn any losing situation upside down! </p>
             <button>Sign Up!</button>
             <button>Login!</button>
         </div>
@@ -127,3 +127,11 @@ menu: nav/home.html
             <p>Users on the website</p>
         </div>
 </section>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+
+<script>
+    var timeline = gsap.timeline({delay: 0.2});
+    timeline.to(".hero-image", {rotation: 360, x: 5, duration: 1})
+    .to(".title", {duration: 1, y: -25, ease: 'elastic.out'})
+</script>
