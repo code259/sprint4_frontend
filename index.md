@@ -104,12 +104,13 @@ menu: nav/home.html
         }
 </style>
 
+
 <section class="hero">
         <div class="hero-text">
             <h1>Pawnsly</h1>
-            <p>Pawnsly is a website with a focus in the game of Chess. By using Gemini Integration, Pawnsly can analyze your chess boards and turn any losing situation upside down! </p>
+            <p>Pawnsy is a website with a focus in the game of Chess. By using Gemini Integration, Pawnsy can analyze your chess boards and turn any losing situation upside down! Get started on Pawnsy, our Chess based social media site for our AP Computer Science Principles Sprint 4 Project </p>
             <button>Sign Up!</button>
-            <button>Learn More!</button>
+            <button>Login!</button>
         </div>
         <div class="hero-image">
             <img src="https://images.unsplash.com/photo-1560174038-da43ac74f01b?q=80&w=2914&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chess Cat">
