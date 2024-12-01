@@ -88,26 +88,26 @@ menu: nav/home.html
             color: gray;
         }
         button {
-            background-color: transparent; /* Transparent background */
-            color: white; /* Text color */
-            border: 2px solid white; /* White border */
-            padding: 10px 20px; /* Add padding for size */
-            font-size: 16px; /* Adjust font size */
-            cursor: pointer; /* Pointer cursor on hover */
-            border-radius: 5px; /* Optional: Rounded corners */
-            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         button:hover {
-            background-color: white; /* White background on hover */
-            color: black; /* Black text on hover */
+            background-color: white;
+            color: black;
         }
 </style>
 
 
 <section class="hero">
         <div class="hero-text">
-            <h1 class="title">Pawnsly</h1>
+            <h1 class="title"></h1>
             <p>Pawnsly is a website with a focus in the game of Chess. By using Gemini Integration, Pawnsly can analyze your chess boards and turn any losing situation upside down! </p>
             <button id="login-btn">Sign Up!</button>
             <button id="signup-btn">Login!</button>
@@ -129,6 +129,7 @@ menu: nav/home.html
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/TextPlugin.min.js"></script>
 
 <script>
     signup_btn = document.getElementById('signup-btn').onclick = function () {
@@ -138,8 +139,8 @@ menu: nav/home.html
         location.href = "{{site.baseurl}}/login"
     }
 
-
+    gsap.registerPlugin(TextPlugin)
     var timeline = gsap.timeline({delay: 0.2});
     timeline.to(".hero-image", {rotation: 360, x: 5, duration: 1})
-    .to(".title", {duration: 1, y: -25, ease: 'elastic.out'})
+    .to(".title", {duration: 1, text: "Pawnsly", ease: "none"})
 </script>
