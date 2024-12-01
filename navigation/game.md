@@ -33,7 +33,8 @@ permalink: /game/
         integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard.min.js"></script>
-<script src="https://unpkg.com/stockfish/stockfish.js"></script>
+<!-- <script src="https://unpkg.com/stockfish/stockfish.js"></script> -->
+<script src="https://code259.github.io/assets/js/stockfish-16.1.js"></script>
 
 <script>
     const board = Chessboard('board', {
@@ -46,7 +47,7 @@ permalink: /game/
     });
 
     const game = new Chess();
-    const stockfish = new Worker('https://unpkg.com/stockfish/stockfish.js');
+    const stockfish = new Worker('https://code259.github.io/assets/js/stockfish-16.1.js');
     const statusEl = document.getElementById('status');
 
     function handleMove(source, target, piece, newPos, oldPos, orientation) {
@@ -59,8 +60,8 @@ permalink: /game/
         // illegal move
         if (move === null) return 'snapback'
 
-        // window.setTimeout(makeRandomMove, 250)
         window.setTimeout(makeAIMove, 250)
+        // window.setTimeout(makeAIMove, 250)
         // updateStatus();
         // setTimeout(makeAIMove, 250);
     }
