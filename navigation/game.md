@@ -34,7 +34,7 @@ permalink: /game/
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/chessboard.min.js"></script>
 <!-- <script src="https://unpkg.com/stockfish/stockfish.js"></script> -->
-<script src="https://code259.github.io/assets/js/stockfish-16.1.js"></script>
+<script src="https://code259.github.io/sprint4_frontend/assets/js/stockfish-16.1.js"></script>
 
 <script>
     const board = Chessboard('board', {
@@ -47,7 +47,7 @@ permalink: /game/
     });
 
     const game = new Chess();
-    const stockfish = new Worker('https://code259.github.io/assets/js/stockfish-16.1.js');
+    const stockfish = new Worker('https://code259.github.io/sprint4_frontend/assets/js/stockfish-16.1.js');
     const statusEl = document.getElementById('status');
 
     function handleMove(source, target, piece, newPos, oldPos, orientation) {
