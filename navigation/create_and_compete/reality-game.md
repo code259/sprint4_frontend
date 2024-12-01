@@ -7,10 +7,10 @@ author: Yash, Nikhil, Rohan, Neil
 ---
 
 <div class="sidebar">
-    <a href="/flocker_frontend/create_and_compete/realityroom-home" class="sidebar-btn">🏠 Home</a>
-    <a href="/flocker_frontend/create_and_compete/reality_game" class="sidebar-btn">🎮 Game</a>
-    <a href="/flocker_frontend/create_and_compete/reality-room-about" class="sidebar-btn">❓ About</a>
-    <a href="/flocker_frontend/create_and_compete/reality-room-terms" class="sidebar-btn">📄 Terms</a>
+    <a href="/sprint4_frontend/create_and_compete/realityroom-home" class="sidebar-btn">🏠 Home</a>
+    <a href="/sprint4_frontend/create_and_compete/reality_game" class="sidebar-btn">🎮 Game</a>
+    <a href="/sprint4_frontend/create_and_compete/reality-room-about" class="sidebar-btn">❓ About</a>
+    <a href="/sprint4_frontend/create_and_compete/reality-room-terms" class="sidebar-btn">📄 Terms</a>
 </div>
 
 <style>
@@ -304,7 +304,7 @@ author: Yash, Nikhil, Rohan, Neil
     window.onload = displayTrickyMessage;
 
     async function sendToGeminiAPI(userMessage) {
-        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyBOUekV-txUye0_jpkGlfRe3PMk7Q9GHic";
+        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyC7rvbvjIX_dd9EbMCErHweZuO2SklJu7o";
 
         try {
             const response = await fetch(apiUrl, {
