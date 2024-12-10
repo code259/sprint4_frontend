@@ -84,8 +84,8 @@ hide: true
 
 <section class="hero">
         <div class="hero-text">
-            <h1 class="title"></h1>
-            <p>Pawnsly is a website with a focus in the game of Chess. By using Gemini Integration, Pawnsly can analyze your chess boards and turn any losing situation upside down! </p>
+            <h1 class="title">Pawnsly</h1>
+            <p>Pawnsly is a website with a focus in the game of Chess. Play against three different ai difficulty levels or login to play against friends online. By using Gemini Integration, Pawnsly can analyze your chess boards and turn any losing situation upside down! </p>
             <button id="login-btn">Sign Up!</button>
             <button id="signup-btn">Login!</button>
         </div>
@@ -119,5 +119,5 @@ hide: true
     gsap.registerPlugin(TextPlugin)
     var timeline = gsap.timeline({delay: 0.2});
     timeline.to(".hero-image", {rotation: 360, x: 5, duration: 1})
-    .to(".title", {duration: 1, text: "Pawnsly", ease: "none"})
+    .to(".title", {duration: 1, text: "Pawnsy", ease: "none"})
 </script>
