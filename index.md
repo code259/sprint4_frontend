@@ -3,35 +3,12 @@ layout: base
 title: Pawnsy
 search_exclude: true
 hide: true
-menu: nav/home.html
 ---
 
 <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 40px;
-            /* background: #fff; */
-        }
-
         header h1 {
             margin: 0;
             font-size: 24px;
-        }
-
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: black;
-            font-weight: bold;
         }
 
         .hero {
