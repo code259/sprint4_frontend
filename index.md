@@ -9,7 +9,39 @@ hide: true
         header h1 {
             margin: 0;
             font-size: 24px;
+        
         }
+body {
+    background: linear-gradient(135deg, #1c1c1c, #444);
+    color: white;
+    font-family: 'Arial', sans-serif;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1c1c1c, #444);
+    color: white;
+    font-family: 'Arial', sans-serif;
+}
+
+/*making block outline around nav*/
+
+nav {
+    margin: 0 auto;
+    padding: 3px 20px; 
+    background: black;
+    border: 4px solid white; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+    display: inline-block; 
+}
+
+
+
+
 
         .hero {
             display: flex;
@@ -79,16 +111,17 @@ hide: true
             background-color: white;
             color: black;
         }
+        
 </style>
 
 
 <section class="hero">
         <div class="hero-text">
             <h1 class="title"></h1>
-            <p>Pawnsly is a website with a focus in the game of Chess. Play against three different ai difficulty levels or login to play against friends online. By using Gemini Integration, Pawnsly can analyze your chess boards and turn any losing situation upside down! </p>
+            <p>Pawnsy is a website with a focus in the game of Chess. Play against three different AI difficulty levels or login to play against friends online. By using Gemini Integration, Pawnsy can analyze your chess boards and turn any losing situation upside down! </p>
             <button id="login-btn">Sign Up!</button>
             <button id="signup-btn">Login!</button>
-        </div>
+        </div>  
         <div class="hero-image">
             <img src="https://images.unsplash.com/photo-1560174038-da43ac74f01b?q=80&w=2914&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Chess Cat">
         </div>
@@ -97,11 +130,11 @@ hide: true
 <section class="stats">
         <div>
             <h2>200</h2>
-            <p>Users on the website</p>
+            <p>Users online 🟢</p>
         </div>
         <div>
             <h2>1000+</h2>
-            <p>Users on the website</p>
+            <p>Registered players 👤</p>
         </div>
 </section>
 
@@ -120,19 +153,4 @@ hide: true
     var timeline = gsap.timeline({delay: 0.2});
     timeline.to(".hero-image", {rotation: 360, x: 5, duration: 1})
     .to(".title", {duration: 1, text: "Pawnsy", ease: "none"})
-
-
-    window.onload = async function() {
-        try {
-            const response = await fetch('/check-auth', { credentials: 'include' });
-            const data = await response.json();
-            console.log(data)
-            if (data.isAuthenticated) {
-                console.log('logged');
-            }
-        } catch (error) {
-            console.error('Error checking authentication', error);
-        }
-    };
 </script>
-
