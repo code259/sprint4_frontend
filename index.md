@@ -120,4 +120,19 @@ hide: true
     var timeline = gsap.timeline({delay: 0.2});
     timeline.to(".hero-image", {rotation: 360, x: 5, duration: 1})
     .to(".title", {duration: 1, text: "Pawnsy", ease: "none"})
+
+
+    window.onload = async function() {
+        try {
+            const response = await fetch('/check-auth', { credentials: 'include' });
+            const data = await response.json();
+            console.log(data)
+            if (data.isAuthenticated) {
+                console.log('logged');
+            }
+        } catch (error) {
+            console.error('Error checking authentication', error);
+        }
+    };
 </script>
+
