@@ -189,6 +189,12 @@ show_reading_time: false
         const isAuthenticated = document.cookie.includes('auth_token'); // Example check
         if (isAuthenticated) {
             pythonDatabase();
+            console.log("auth token");
         }
+        // const jwtToken = document.cookie.includes('auth_token'); // Example check
+        // if (isAuthenticated) {
+        //     pythonDatabase();
+        //     console.log("auth token");
+        // }
     };
 </script>
