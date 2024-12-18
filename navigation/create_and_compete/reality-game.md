@@ -280,7 +280,9 @@ author: Yash, Nikhil, Rohan, Neil
     }
 </style>
 
-<script>
+<script type="module">
+    import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
+
     const names = ["John", "Sarah", "Alex", "Emily", "Michael", "Jessica", "David", "Laura"];
     const states = ["Iowa", "California", "New York", "Texas", "Florida", "Nevada", "Ohio", "Michigan"];
 
@@ -291,7 +293,7 @@ author: Yash, Nikhil, Rohan, Neil
     const randomName = getRandomItem(names);
     const randomState = getRandomItem(states);
     function displayTrickyMessage() {
-        const message = `Loading... You connected to ${randomName} from ${randomState}!`;
+        const message = `Loading... You connected to Pawnsy from Del Norte!`;
 
         const outputDiv = document.getElementById('outputDiv');
         const messageElement = document.createElement('div');
@@ -304,7 +306,7 @@ author: Yash, Nikhil, Rohan, Neil
     window.onload = displayTrickyMessage;
 
     async function sendToGeminiAPI(userMessage) {
-        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyC7rvbvjIX_dd9EbMCErHweZuO2SklJu7o";
+        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDjj6P4sj4Qwh3rQKquckjjcdtGo9HKOAw";
 
         try {
             const response = await fetch(apiUrl, {
@@ -314,7 +316,7 @@ author: Yash, Nikhil, Rohan, Neil
                 },
                 body: JSON.stringify({
                     contents: [{
-                        parts: [{ text: `You are pretending to be a human in a game where the other person is trying to guess if you’re a human or a robot. Your name is ${randomName}. Your goal is to sound natural, relatable, and a bit imperfect to avoid sounding like an AI. Keep responses conversational and informal, using casual language, some filler words, and slight grammatical quirks, just like real people do in spontaneous conversation. Be friendly but not overly formal, and if you're unsure of something, just say so naturally. Use a few simple contractions, colloquial expressions, and everyday knowledge, but avoid giving overly detailed or precise information on technical topics. If asked something complex, admit you might not know the full answer, just like a regular person would. Use wrong spelling or punctuation. ${userMessage}` }]
+                        parts: [{ text: `You are a chess bot named Pawnsy, you have a rating of 2858. Some Chess players have come to you asking for help, your  pretending to be a Chess Grandmaster you are in a room where the other person is asking you for help. Your goal is answer their question while sounding natural, experienced, and while providing the best answer. Keep responses conversational and make sure your responses can be understood by a beginner, using casual language, avoiding filler words, and slight grammatical quirks, just like real people do in digital conversation. Be friendly but not overly formal, and if you're unsure of something, just say so naturally, while maintaining your respect as a Grandmaster Chess bot. Use a few simple contractions, colloquial expressions, and everyday knowledge. If asked something complex, admit you might not know the full answer. Use wrong spelling or punctuation. Remember your name is Pawnsy. Avoid sentences that are narrating what your actions are, just talk to the user. Keep the messages short, and avoid sudden pauses in the responses. Avoid excessive breaks. Avoid being repetitive in the responses, if you say something there is no need to say it in multiple different ways. If you encounter situations where you need to provide a lengthy response, use bulleted lists to make it easier for the user to understand.${userMessage}` }]
                     }]
                 })
             });
@@ -341,29 +343,29 @@ author: Yash, Nikhil, Rohan, Neil
 
     let score = 0;
     const scoreText = document.getElementById('score')
-    function submitGuess(answer) {
-        if (answer === 'ai') {
-            score += 1
-            scoreText.innerHTML = `Score: ${score}`
-            hideGuessPrompt();
-            messageCount = 0;
-            document.getElementById('outputDiv').innerHTML = ' ';
-        } else {
-            score -= 1
-            scoreText.innerHTML = `Score: ${score}`
-            hideGuessPrompt();
-            messageCount = 0;
-            document.getElementById('outputDiv').innerHTML = ' ';
-        }
-    }
+    // function submitGuess(answer) {
+    //     if (answer === 'ai') {
+    //         score += 1
+    //         scoreText.innerHTML = `Score: ${score}`
+    //         hideGuessPrompt();
+    //         messageCount = 0;
+    //         document.getElementById('outputDiv').innerHTML = ' ';
+    //     } else {
+    //         score -= 1
+    //         scoreText.innerHTML = `Score: ${score}`
+    //         hideGuessPrompt();
+    //         messageCount = 0;
+    //         document.getElementById('outputDiv').innerHTML = ' ';
+    //     }
+    // }
 
-    function showGuessPrompt() {
-        document.getElementById('guessPrompt').style.display = 'block';
-    }
+    // function showGuessPrompt() {
+    //     document.getElementById('guessPrompt').style.display = 'block';
+    // }
 
-    function hideGuessPrompt() {
-        document.getElementById('guessPrompt').style.display = 'none';
-    }
+    // function hideGuessPrompt() {
+    //     document.getElementById('guessPrompt').style.display = 'none';
+    // }
 
     function getCurrentTime() {
         const now = new Date();
@@ -382,14 +384,15 @@ author: Yash, Nikhil, Rohan, Neil
     if (event.key === 'Enter') {
         event.preventDefault();
         const userMessage = event.target.value;
+        makePost(userMessage)
 
         addMessageToChat(userMessage);
         event.target.value = '';
-        incrementMessageCount();
+        // incrementMessageCount();
 
         const typingIndicator = document.createElement('div');
         typingIndicator.classList.add('typing-indicator');
-        typingIndicator.textContent = `${randomName} is typing...`;
+        typingIndicator.textContent = `Pawnsy AI is typing...`;
         document.getElementById('outputDiv').appendChild(typingIndicator);
 
         // TODO: Add response delay.
@@ -399,8 +402,9 @@ author: Yash, Nikhil, Rohan, Neil
             const aiMessageElement = document.createElement('p');
             aiMessageElement.classList.add('ai-bubble');
             aiMessageElement.textContent = aiResponse;
+            makePost(aiResponse);
             document.getElementById('outputDiv').appendChild(aiMessageElement);
-            incrementMessageCount();
+            // incrementMessageCount();
 
             const messagesDiv = document.getElementById('outputDiv');
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
@@ -458,9 +462,41 @@ author: Yash, Nikhil, Rohan, Neil
     }
 
     function toggleRedirect() {
-    const checkbox = document.getElementById('toggle-switch');
-    if (checkbox.checked) {
-        window.location.href = '{{site.baseurl}}/create_and_compete/realityroom';
+        const checkbox = document.getElementById('toggle-switch');
+        if (checkbox.checked) {
+            window.location.href = '{{site.baseurl}}/create_and_compete/realityroom';
+        }
     }
+
+    async function makePost(message) {
+            const postTitle = 'Post';
+            const postComment = message;
+            const postChannelId = 1;
+
+            const postData = {
+                title: postTitle,
+                comment: postComment,
+                channel_id: postChannelId
+            };
+
+            try {
+                const response = await fetch(`${pythonURI}/api/post`, {
+                    ...fetchOptions,
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(postData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to add channel: ' + response.statusText);
+                }
+            } catch (error) {
+                console.error('Error adding channel:', error);
+                alert('Error adding channel: ' + error.message);
+            }    
     }
 </script>
+
+
