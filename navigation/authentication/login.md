@@ -185,10 +185,19 @@ show_reading_time: false
 
     // Check for cookies and call relevant database functions on page load
     window.onload = function() {
-        // Check if user is authenticated by checking cookies or local storage
+        const jwt_token = document.cookie.includes('jwt_python_flask'); // Example check
+        if (jwt_token) {
+            console.log('logged');
+        } // Check if user is authenticated by checking cookies or local storage
         const isAuthenticated = document.cookie.includes('auth_token'); // Example check
         if (isAuthenticated) {
             pythonDatabase();
+            console.log("auth token");
         }
+        // const jwtToken = document.cookie.includes('auth_token'); // Example check
+        // if (isAuthenticated) {
+        //     pythonDatabase();
+        //     console.log("auth token");
+        // }
     };
 </script>
