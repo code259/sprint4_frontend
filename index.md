@@ -153,4 +153,52 @@ nav {
     var timeline = gsap.timeline({delay: 0.2});
     timeline.to(".hero-image", {rotation: 360, x: 5, duration: 1})
     .to(".title", {duration: 1, text: "Pawnsy", ease: "none"})
+
+      // to measure website load time
+  window.addEventListener('load', () => {
+    const loadTime = (performance.now() / 1000).toFixed(2); // Time in seconds
+
+    // Create a div to display the load time
+    const loadTimeDiv = document.createElement('div');
+    loadTimeDiv.textContent = `Load Time: ${loadTime}s`;
+
+    // styling of  the load time div
+    loadTimeDiv.style.position = 'fixed';
+    loadTimeDiv.style.top = '10px';
+    loadTimeDiv.style.right = '10px';
+    loadTimeDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    loadTimeDiv.style.color = '#fff';
+    loadTimeDiv.style.padding = '8px 12px';
+    loadTimeDiv.style.borderRadius = '5px';
+    loadTimeDiv.style.fontFamily = 'Arial, sans-serif';
+    loadTimeDiv.style.fontSize = '14px';
+    loadTimeDiv.style.zIndex = '1000';
+
+    // Append the load time div to body
+    document.body.appendChild(loadTimeDiv);
+
+    // Create the sliding bar div
+    const slidingBar = document.createElement('div');
+    slidingBar.style.position = 'fixed';
+    slidingBar.style.top = '40px';
+    slidingBar.style.right = '10px';
+    slidingBar.style.width = '0'; // Starts at 0 width
+    slidingBar.style.height = '5px';
+    slidingBar.style.backgroundColor = '#4caf50'; // Green color
+    slidingBar.style.borderRadius = '3px';
+    slidingBar.style.transition = 'width 2s ease-out'; // Smooth sliding animation
+    slidingBar.style.zIndex = '1000';
+
+    document.body.appendChild(slidingBar);
+
+    // dynamically scale the bar width based on load time
+    const maxLoadTime = 5; // the upper threshold for load time(s)
+    const maxBarWidth = 300; // Max width of the bar in pixels
+    const barWidth = Math.min((loadTime / maxLoadTime) * maxBarWidth, maxBarWidth);
+
+    // Animate the sliding bar
+    setTimeout(() => {
+      slidingBar.style.width = `${barWidth}px`;
+    }, 100); // delay for the animation
+  });
 </script>
