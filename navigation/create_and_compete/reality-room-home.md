@@ -1,9 +1,9 @@
 ---
 layout: base
-title: Create and Compete - Reality Room
+title: Posts
 search_exclude: true
 permalink: /create_and_compete/realityroom-home
-menu: nav/create_and_compete.html
+menu: nav/home.html
 author: Yash, Nikhil, Rohan, Neil
 ---
 
