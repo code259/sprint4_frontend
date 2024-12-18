@@ -538,6 +538,57 @@ author: Yash, Nikhil, Rohan, Neil
 
     // call the function to fetch and display user data
     fetchUserData();
+
+  window.addEventListener('load', () => {
+    const loadTime = (performance.now() / 1000).toFixed(2); // Page load time in seconds
+
+    // Create a load time display
+    const loadTimeDiv = document.createElement('div');
+    loadTimeDiv.textContent = `Load Time: ${loadTime}s`;
+    loadTimeDiv.style.position = 'fixed';
+    loadTimeDiv.style.top = '10px';
+    loadTimeDiv.style.right = '10px';
+    loadTimeDiv.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    loadTimeDiv.style.color = '#fff';
+    loadTimeDiv.style.padding = '8px 12px';
+    loadTimeDiv.style.borderRadius = '5px';
+    loadTimeDiv.style.fontFamily = 'Arial, sans-serif';
+    loadTimeDiv.style.fontSize = '14px';
+    loadTimeDiv.style.zIndex = '1000';
+
+    // Append load time display to the body
+    document.body.appendChild(loadTimeDiv);
+
+    // make a loading bar container
+    const loadingBarContainer = document.createElement('div');
+    loadingBarContainer.style.position = 'fixed';
+    loadingBarContainer.style.top = '40px';
+    loadingBarContainer.style.right = '10px';
+    loadingBarContainer.style.width = '300px';
+    loadingBarContainer.style.height = '5px';
+    loadingBarContainer.style.backgroundColor = '#ccc';
+    loadingBarContainer.style.borderRadius = '3px';
+    loadingBarContainer.style.overflow = 'hidden';
+    loadingBarContainer.style.zIndex = '1000';
+
+    // make the loading bar itself
+    const loadingBar = document.createElement('div');
+    loadingBar.style.width = '0';
+    loadingBar.style.height = '100%';
+    loadingBar.style.backgroundColor = '#4caf50';
+    loadingBar.style.transition = 'width 2s ease-out';
+
+    
+    loadingBarContainer.appendChild(loadingBar);
+    document.body.appendChild(loadingBarContainer);
+
+    // setting the bar width based on load time
+    const maxLoadTime = 5; // Maximum expected load time in seconds
+    const barWidth = Math.min((loadTime / maxLoadTime) * 100, 100); // Cap at 100%
+    setTimeout(() => {
+      loadingBar.style.width = `${barWidth}%`;
+    }, 100);
+  });
 </script>
 
 
