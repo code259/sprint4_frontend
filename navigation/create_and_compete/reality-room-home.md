@@ -141,17 +141,22 @@ author: Yash, Nikhil, Rohan, Neil
         /* padding-left: 180px; */
     }
 
+/*center align profile pictures*/
     .friends-container {
-        display: flex;
-        overflow-x: auto; /* horizontal scrolling */
-        padding: 10px;
-        margin-bottom: 10px;
-        margin-top: 20px;
-        gap: 10px; 
-        scrollbar-width: thin;
-        scrollbar-color: #ccc transparent; /* Color for scrollbar */
-        width: 750px;
-    }
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    padding: 10px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+    gap: 10px;
+    width: 100%;
+    max-width: 750px; 
+    margin-left: auto;
+    margin-right: auto;
+}
+
 
     .friend {
         display: flex;
