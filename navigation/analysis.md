@@ -73,6 +73,8 @@ permalink: /analysis/
             game.move(moveHistory[i]);
         }
         board.position(game.fen());
+        // TODO: here need to call a function that runs a fetch request to analyze-move endpoint
+        // on first move "last_evaluation" will be 0, else will be this will be stored in a variable to be sent
     }
 
     // Handle Arrow Key Navigation
