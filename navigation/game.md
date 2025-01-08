@@ -86,6 +86,7 @@ permalink: /game/
 
 <script type="module">
 		import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
+		let elo = prompt("Enter elo (chess ranking) of the bot you want to play. 100 (beginner) to 3500 (god):")
 
 		const board = Chessboard('board', {
 				draggable: true,
@@ -109,7 +110,7 @@ permalink: /game/
 				// illegal move
 				if (move === null) return 'snapback'
 
-				window.setTimeout(makeRandomMove, 250)
+				window.setTimeout(makeComputerMove, 250)
 		}
 
 		function onDragStart (source, piece, position, orientation) {
@@ -121,14 +122,14 @@ permalink: /game/
 				board.position(game.fen())
 		}
 
-		async function fetchBestMove(fen) {
+		async function fetchBestMove(fen, elo) {
 				try {
 						const response = await fetch(`${pythonURI}/get-move`, {
 								method: 'POST',
 								headers: {
 										'Content-Type': 'application/json'
 								},
-								body: JSON.stringify({ fen: fen })
+								body: JSON.stringify({fen: fen, elo: elo})
 						});
 
 						if (!response.ok) {
@@ -157,14 +158,14 @@ permalink: /game/
 				return matchingMove ? matchingMove.san : null;
 		}
 
-		async function makeRandomMove () {
+		async function makeComputerMove() {
 				var possibleMoves = game.moves()
 
 				var randomIdx = Math.floor(Math.random() * possibleMoves.length)
 				console.log(possibleMoves)
 				console.log(possibleMoves[randomIdx])
 
-				const bestMove = await fetchBestMove(game.fen())
+				const bestMove = await fetchBestMove(game.fen(), elo)
 				const convertedMove = stockfishToAlgebraic(bestMove)
 				console.log("sliced", bestMove.slice(-2))
 				console.log("not sliced", bestMove)

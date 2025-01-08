@@ -3,19 +3,200 @@ layout: base
 title: Create and Compete - Reality Room
 search_exclude: true
 permalink: /create_and_compete/realityroom-home
-menu: nav/create_and_compete.html
 author: Yash, Nikhil, Rohan, Neil
 ---
+
+<div class="sidebar" id="sidebar">
+    <a href="/sprint4_frontend/create_and_compete/realityroom-home" class="sidebar-btn">🏠 Home</a>
+    <a href="/sprint4_frontend/create_and_compete/reality_game" class="sidebar-btn">🎮 Game</a>
+    <a href="/sprint4_frontend/create_and_compete/reality-room-about" class="sidebar-btn">❓ About</a>
+    <a href="/sprint4_frontend/create_and_compete/reality-room-terms" class="sidebar-btn">📄 Terms</a>
+</div>
+
+<div class="main">
+    <div class="content">
+        <h2 id="header-title">Channels</h2>
+        <div id="friends-container" class="friends-container">
+            <div class="friend">
+                <div class="profile-pic"><img src="https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Irma"></div>
+                <p>Irma</p>
+                <span class="live-badge">Live</span>
+            </div>
+        </div>
+        <div id="form-container" class="form-container">
+            <form id="channelForm">
+                <div class="form-inputs">
+                    <input type="text" id="title" name="title" placeholder="Enter Title Here" required>
+                    <input type="file" id="fileInput" name="fileInput" style="display: none;">
+                    <button type="button" onclick="document.getElementById('fileInput').click()" class="file-button">➕</button>
+                </div>
+                <textarea id="textArea" name="textArea" placeholder="Post Here" required></textarea>
+                <button type="submit">Post</button>
+            </form>
+        </div>
+        <div id="channels"></div>
+    </div>
+</div>
+
+<div id="loginArea"></div>
+
+<script type="module">
+    import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
+
+    async function fetchUser() {
+        try {
+            const response = await fetch(`${pythonURI}/api/user`, fetchOptions);
+            if (!response.ok) {
+                throw new Error('User not logged in');
+            }
+            const user = await response.json();
+            return user;
+        } catch (error) {
+            console.warn('User is not logged in:', error);
+            return null;
+        }
+    }
+
+    async function initializePage() {
+        const user = await fetchUser();
+        const sidebar = document.getElementById('sidebar');
+        const loginArea = document.getElementById('loginArea');
+
+        if (user) {
+            sidebar.style.display = "flex";
+            document.getElementById("header-title").style.display = "block";
+            document.getElementById("friends-container").style.display = "flex";
+            document.getElementById("form-container").style.display = "block";
+
+            loginArea.innerHTML = `
+                <div class="dropdown">
+                    <button class="dropbtn">${user.name}</button>
+                    <div class="dropdown-content">
+                        <a href="{{site.baseurl}}/logout">Logout</a>
+                        <a href="{{site.baseurl}}/profile">Profile</a>
+                        <a href="{{site.baseurl}}/settings">Settings</a>
+                    </div>
+                </div>
+            `;
+        } else {
+            sidebar.style.display = "none";
+            document.getElementById("header-title").style.display = "none";
+            document.getElementById("friends-container").style.display = "none";
+            document.getElementById("form-container").style.display = "none";
+
+            loginArea.innerHTML = `
+                <a href="/flocker_frontend/login" class="login-btn">Login</a>
+            `;
+        }
+    }
+
+    window.onload = initializePage;
+</script>
+
 
 <div class="sidebar">
     <a href="/flocker_frontend/create_and_compete/realityroom-home" class="sidebar-btn">🏠 Home</a>
     <a href="/flocker_frontend/create_and_compete/reality_game" class="sidebar-btn">🎮 Game</a>
     <a href="/flocker_frontend/create_and_compete/reality-room-about" class="sidebar-btn">❓ About</a>
     <a href="/flocker_frontend/create_and_compete/reality-room-terms" class="sidebar-btn">📄 Terms</a>
-    <a href="/sprint4_frontend/create_and_compete/reality-room-leaderboard" class="sidebar-btn">🎖️ Leaderboard</a>
+     <a href="/sprint4_frontend/create_and_compete/reality-room-leaderboard" class="sidebar-btn">🎖️ Leaderboard</a>
 </div>
 
+
+
+<div id="sidebar" class="sidebar" style="display: none;"></div>
+
 <div class="main">
+    <div class="content">
+        <h2 id="header-title" style="display: none;">Channels</h2>
+        <div id="friends-container" class="friends-container" style="display: none;">
+            <div class="friend">
+                <div class="profile-pic"><img src="https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Irma"></div>
+                <p>Irma</p>
+                <span class="live-badge">Live</span>
+            </div>
+        </div>
+        <div id="form-container" class="form-container" style="display: none;">
+            <form id="channelForm">
+                <div class="form-inputs">
+                    <input type="text" id="title" name="title" placeholder="Enter Title Here" required>
+                    <input type="file" id="fileInput" name="fileInput" style="display: none;">
+                    <button type="button" onclick="document.getElementById('fileInput').click()" class="file-button">➕</button>
+                </div>
+                <textarea id="textArea" name="textArea" placeholder="Post Here" required></textarea>
+                <button type="submit">Post</button>
+            </form>
+        </div>
+        <div id="channels"></div>
+    </div>
+</div>
+
+<div id="imageTest"></div>
+
+<script type="module">
+    import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
+
+    async function fetchUser () {
+        try {
+            const response = await fetch(`${pythonURI}/api/user`, fetchOptions);
+            if (!response.ok) {
+                throw new Error('User  not logged in');
+            }
+            const user = await response.json();
+            return user;
+        } catch (error) {
+            console.warn('User  is not logged in:', error);
+            return null;
+        }
+    }
+
+    async function initializePage() {
+        const user = await fetchUser ();
+        const sidebar = document.getElementById('sidebar');
+        const loginArea = document.getElementById('loginArea');
+
+        if (user) {
+            sidebar.innerHTML = `
+                <a href="/flocker_frontend/create_and_compete/realityroom-home" class="sidebar-btn">🏠 Home</a>
+                <a href="/flocker_frontend/create_and_compete/reality_game" class="sidebar-btn">🎮 Game</a>
+                <a href="/flocker_frontend/create_and_compete/reality-room-about" class="sidebar-btn">❓ About</a>
+                <a href="/flocker_frontend/create_and_com
+                
+                
+                pete/reality-room-terms" class="sidebar-btn">📄 Terms</a>
+            `;
+            sidebar.style.display = "flex";
+            document.getElementById("header-title").style.display = "block";
+            document.getElementById("friends-container").style.display = "flex";
+            document.getElementById("form-container").style.display = "block";
+
+            loginArea.innerHTML = `
+                <div class="dropdown">
+                    <button class="dropbtn">${user.name}</button>
+                    <div class="dropdown-content">
+                        <a href="{{site.baseurl}}/logout">Logout</a>
+                        <a href="{{site.baseurl}}/profile">Profile</a>
+                        <a href="{{site.baseurl}}/ settings">Settings</a>
+                    </div>
+                </div>
+            `;
+        } else {
+            sidebar.innerHTML = '';
+            sidebar.style.display = "none";
+            document.getElementById("header-title").style.display = "none";
+            document.getElementById("friends-container").style.display = "none";
+            document.getElementById("form-container").style.display = "none";
+
+            loginArea.innerHTML = `
+                <a href="/sprint4_frontend/login" class="login-btn">Login</a>
+            `;
+        }
+    }
+
+    window.onload = initializePage;
+</script>
+
+<script>
     <div id="sidebar"></div>
     <div class="content">
         <h2>Channels</h2>
@@ -100,6 +281,7 @@ author: Yash, Nikhil, Rohan, Neil
 </div>
 <div id="imageTest"></div>
 
+</script>
 <style>
     /* Sidebar */
     .sidebar {
@@ -463,6 +645,8 @@ author: Yash, Nikhil, Rohan, Neil
                 body: JSON.stringify(channelData)
             });
 
+
+
             if (!response.ok) {
                 throw new Error('Failed to add channel: ' + response.statusText);
             }
@@ -477,62 +661,3 @@ author: Yash, Nikhil, Rohan, Neil
 
     fetchChannels();
 </script>
-
-
-<script type="module">
-    import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
-
-    async function fetchUserData() {
-        try {
-            // create the GET request to fetch user data
-            const response = await fetch(`${pythonURI}/api/users`, fetchOptions);
-
-            // checking for a successful response
-            if (!response.ok) {
-                throw new Error('Failed to fetch user data: ' + response.statusText);
-            }
-                                                                          
-            // parse up response JSON
-            const userData = await response.json();
-            console.log(userData);
-
-            // get the container where the user data will be displayed
-            const friendsContainer = document.querySelector('.friends-container');
-
-            for (const user of userData) {
-                const { name, role, pfp } = user;
-
-                const friendDiv = document.createElement('div');
-                friendDiv.className = 'friend';
-
-                const profilePicDiv = document.createElement('div');
-                profilePicDiv.className = 'profile-pic';
-                
-                const img = document.createElement('img');
-                img.src = "https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-
-                profilePicDiv.appendChild(img);
-
-                const nameTag = document.createElement('p');
-                nameTag.textContent = name;
-
-                friendDiv.appendChild(profilePicDiv);
-                friendDiv.appendChild(nameTag);
-
-                console.log(name);
-                console.log(role);
-                console.log(pfp);
-
-                friendsContainer.appendChild(friendDiv);
-            }
-
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    }
-
-    // call the function to fetch and display user data
-    fetchUserData();
-</script>
-
-
