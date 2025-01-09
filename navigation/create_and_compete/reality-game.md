@@ -290,10 +290,31 @@ author: Yash, Nikhil, Rohan, Neil
         return array[Math.floor(Math.random() * array.length)];
     }
 
+    var phrases = []
+    async function fetchPhrases() {
+        try {
+            // Make the GET request to the '/student/clubs' endpoint
+            const response = await fetch(`${pythonURI}/api/intro/phrases`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            // Parse the JSON response
+            const data = await response.json();
+            phrases = data.Questions;
+            console.log(data.Questions)
+            console.log("array test", phrases)
+        } catch (error) {
+            console.error('Error fetching student data:', error);
+        }
+    }
+    fetchPhrases();
+
     const randomName = getRandomItem(names);
     const randomState = getRandomItem(states);
     function displayTrickyMessage() {
-        const message = `Loading... You connected to Pawnsy from Del Norte!`;
+        // const message = `Loading... You connected to Pawnsy from Del Norte!`;
+        const randomNumber = Math.floor(Math.random() * 10);
+        const message = phrases[randomNumber];
 
         const outputDiv = document.getElementById('outputDiv');
         const messageElement = document.createElement('div');
@@ -498,5 +519,4 @@ author: Yash, Nikhil, Rohan, Neil
             }    
     }
 </script>
-
 
