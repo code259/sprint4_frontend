@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake.io Style Game</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #87CEEB; /* Light Blue Background */
+        }
+        canvas {
+            background-color: #1E90FF; /* Canvas Background - Dodger Blue */
+            display: block;
+            border: 2px solid #FFFFFF;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Game Variables
+        let snake = [{ x: 400, y: 300 }];
+        let food = { x: Math.random() * canvas.width, y: Math.random() * canvas.height };
+        let snakeLength = 5;
+        let speed = 2;
+        let direction = { x: speed, y: 0 }; // Initial direction
+        let turningAngle = Math.PI / 60; // Angle change for smoother turns
+        let score = 0;
+
+        // Handle Continuous Free Movement
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowLeft') {
+                // Rotate direction vector counterclockwise
+                let newDirection = rotateVector(direction.x, direction.y, -turningAngle);
+                direction.x = newDirection.x;
+                direction.y = newDirection.y;
+            }
+            if (event.key === 'ArrowRight') {
+                // Rotate direction vector clockwise
+                let newDirection = rotateVector(direction.x, direction.y, turningAngle);
+                direction.x = newDirection.x;
+                direction.y = newDirection.y;
+            }
+        });
+
+        // Rotate Vector Helper Function
+        const rotateVector = (x, y, angle) => {
+            return {
+                x: x * Math.cos(angle) - y * Math.sin(angle),
+                y: x * Math.sin(angle) + y * Math.cos(angle),
+            };
+        };
+
+        // Spawn Food Randomly
+        const spawnFood = () => {
+            food.x = Math.random() * canvas.width;
+            food.y = Math.random() * canvas.height;
+        };
+
+        // Update Snake Position
+        const updateSnake = () => {
+            // Calculate new head position
+            const head = {
+                x: snake[0].x + direction.x,
+                y: snake[0].y + direction.y,
+            };
+
+            // Add new head to the snake
+            snake.unshift(head);
+
+            // Remove tail if snake is too long
+            if (snake.length > snakeLength) {
+                snake.pop();
+            }
+
+            // Check for collisions with walls
+            if (
+                head.x < 0 || head.y < 0 ||
+                head.x >= canvas.width || head.y >= canvas.height
+            ) {
+                alert(`Game Over! Your score: ${score}`);
+                document.location.reload();
+            }
+
+            // Check for collisions with food
+ 
