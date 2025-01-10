@@ -661,3 +661,46 @@ author: Yash, Nikhil, Rohan, Neil
 
     fetchChannels();
 </script>
+
+<script type="module">
+    import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
+    async function fetchUserData() {
+        try {
+            // create the GET request to fetch user data
+            const response = await fetch(`${pythonURI}/api/users`, fetchOptions);
+            // checking for a successful response
+            if (!response.ok) {
+                throw new Error('Failed to fetch user data: ' + response.statusText);
+            }
+                                                                          
+            // parse up response JSON
+            const userData = await response.json();
+            console.log(userData);
+            // get the container where the user data will be displayed
+            const friendsContainer = document.querySelector('.friends-container');
+            for (const user of userData) {
+                const { name, role, pfp } = user;
+                const friendDiv = document.createElement('div');
+                friendDiv.className = 'friend';
+                const profilePicDiv = document.createElement('div');
+                profilePicDiv.className = 'profile-pic';
+                
+                const img = document.createElement('img');
+                img.src = "https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+                profilePicDiv.appendChild(img);
+                const nameTag = document.createElement('p');
+                nameTag.textContent = name;
+                friendDiv.appendChild(profilePicDiv);
+                friendDiv.appendChild(nameTag);
+                console.log(name);
+                console.log(role);
+                console.log(pfp);
+                friendsContainer.appendChild(friendDiv);
+            }
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    }
+    // call the function to fetch and display user data
+    fetchUserData();
+</script>
