@@ -18,3 +18,4 @@ plugins:
 header_pages:
   - navigation/create_and_compete/home.md
   - navigation/about.md
+  - navigation/leaderboard.md
