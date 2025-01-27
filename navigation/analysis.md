@@ -66,27 +66,68 @@ permalink: /analysis/
         reader.readAsText(file);
     }
 
-    // Function to update board based on moveIndex
-    function updateBoard() {
-        game.reset();
-        for (let i = 0; i < moveIndex; i++) {
-            game.move(moveHistory[i]);
-        }
-        board.position(game.fen());
-        // TODO: here need to call a function that runs a fetch request to analyze-move endpoint
-        // on first move "last_evaluation" will be 0, else will be this will be stored in a variable to be sent
+   // Function to update board based on moveIndex
+// Function to update board based on moveIndex
+function updateBoard() {
+    game.reset();
+    for (let i = 0; i < moveIndex; i++) {
+        game.move(moveHistory[i]);
     }
+    board.position(game.fen());
 
-    // Handle Arrow Key Navigation
-    document.addEventListener('keydown', function (e) {
-        if (!moveHistory.length) return;
+    // Fetch the evaluation of the current position
+    fetchMoveEvaluation(game.fen(), lastEvaluation)
+        .then(data => {
+            if (data) {
+                // Update the status element with the evaluation and status
+                statusEl.textContent = `Evaluation: ${data.evaluation}, Status: ${data.status}, Best Move: ${data.best_move}`;
+                // Store the current evaluation for the next move
+                lastEvaluation = data.evaluation;
+            }
+        })
+        .catch(error => {
+            console.error("Failed to fetch move evaluation:", error);
+        });
+}
+const pythonURI = 'http://127.0.0.1:8887'; // Replace with your backend API URL
 
-        if (e.key === 'ArrowRight') {
-            if (moveIndex < moveHistory.length) moveIndex++;
-            updateBoard();
-        } else if (e.key === 'ArrowLeft') {
-            if (moveIndex > 0) moveIndex--;
-            updateBoard();
+// Function to fetch move evaluation from the backend
+async function fetchMoveEvaluation(fen, lastEvaluation) {
+    try {
+        const response = await fetch(`${pythonURI}/analyze-move`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ fen: fen, last_evaluation: lastEvaluation })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
-    });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Failed to fetch the move evaluation:", error);
+        return null;
+    }2
+}
+
+// Variable to store the last evaluation
+let lastEvaluation = 0.0;
+
+// Handle Arrow Key Navigation
+document.addEventListener('keydown', function (e) {
+    if (!moveHistory.length) return;
+
+    if (e.key === 'ArrowRight') {
+        if (moveIndex < moveHistory.length) moveIndex++;
+        updateBoard();
+    } else if (e.key === 'ArrowLeft') {
+        if (moveIndex > 0) moveIndex--;
+        updateBoard();
+    }
+});
 </script>
+
