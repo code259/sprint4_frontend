@@ -158,6 +158,24 @@ permalink: /game/
 				return matchingMove ? matchingMove.san : null;
 		}
 
+		async function makeGame(pgn) {
+			try {
+				const response = await fetch(`${pythonURI}/api/pgn`, {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ pgn: pgn, date: '01/23/2025', name: 'placeholder', user_id: 3 })
+				});
+				if (!response.ok) {
+					throw new Error('Failed to delete: ' + response.statusText);
+				}
+			} catch (error) {
+				console.error('Error deleting entry:', error);
+			}
+		}
+
 		async function makeComputerMove() {
 				var possibleMoves = game.moves()
 
@@ -177,6 +195,7 @@ permalink: /game/
 
 					const pgn = game.pgn();
 					console.log("pgn", pgn)
+					makeGame(pgn);
 				}
 
 				game.move(convertedMove)
