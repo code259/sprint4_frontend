@@ -74,6 +74,21 @@ permalink: /game/
 	</div>
 </div>
 
+<!-- Add this HTML to the bottom of your game page -->
+<div id="reportMenu" style="position: fixed; bottom: 0; width: 100%; background-color: black; color: white; border-top: 1px solid #ddd; padding: 10px;">
+  <div style="text-align: center;">
+    <h3 style="color: white;">Report Game Result</h3>
+    <label for="userIdInput" style="color: white;">User ID:</label>
+    <input type="number" id="userIdInput" placeholder="Enter your User ID" required style="margin-right: 10px; padding: 5px;">
+    <button id="reportWinButton" style="margin-right: 5px; background-color: #4caf50; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
+      Report Win
+    </button>
+    <button id="reportLossButton" style="background-color: #f44336; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
+      Report Loss
+    </button>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
 				integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2"
@@ -158,6 +173,24 @@ permalink: /game/
 				return matchingMove ? matchingMove.san : null;
 		}
 
+		async function makeGame(pgn) {
+			try {
+				const response = await fetch(`${pythonURI}/api/pgn`, {
+					method: 'POST',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({ pgn: pgn, date: '01/23/2025', name: 'placeholder', user_id: 3 })
+				});
+				if (!response.ok) {
+					throw new Error('Failed to delete: ' + response.statusText);
+				}
+			} catch (error) {
+				console.error('Error deleting entry:', error);
+			}
+		}
+
 		async function makeComputerMove() {
 				var possibleMoves = game.moves()
 
@@ -177,9 +210,64 @@ permalink: /game/
 
 					const pgn = game.pgn();
 					console.log("pgn", pgn)
+					makeGame(pgn);
 				}
 
 				game.move(convertedMove)
 				board.position(game.fen())
 		}
+</script>
+
+<script>
+  async function sendGameResult(userId, result) {
+    try {
+      // Send the POST request
+      const response = await fetch(`http://127.0.0.1:8887/api/user_stats/update_score`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          result: result, // 'win' or 'loss'
+        }),
+      });
+
+      // Handle the response
+      if (!response.ok) {
+        const errorMessage = await response.text(); // Get detailed error message
+        throw new Error(`Error ${response.status}: ${errorMessage}`);
+      }
+
+      const data = await response.json();
+      console.log("Score update response:", data);
+      alert(`Game result submitted successfully: ${result === 'win' ? "Win" : "Loss"}`);
+    } catch (error) {
+      console.error("Failed to update score:", error);
+      alert(`Failed to update score: ${error.message}. Please ensure the backend is running and the User ID is valid.`);
+    }
+  }
+
+  // Event listeners for the report buttons
+  document.getElementById("reportWinButton").onclick = async () => {
+    const userIdInput = document.getElementById("userIdInput").value;
+
+    if (!userIdInput) {
+      alert("Please enter your User ID.");
+      return;
+    }
+
+    await sendGameResult(userIdInput, "win");
+  };
+
+  document.getElementById("reportLossButton").onclick = async () => {
+    const userIdInput = document.getElementById("userIdInput").value;
+
+    if (!userIdInput) {
+      alert("Please enter your User ID.");
+      return;
+    }
+
+    await sendGameResult(userIdInput, "loss");
+  };
 </script>
