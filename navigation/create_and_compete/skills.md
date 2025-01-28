@@ -2,7 +2,7 @@
 layout: base
 title: Skills Rating
 search_exclude: true
-permalink: /create_and_compete/skills
+permalink: /skills/
 ---
 <style>
     body {
