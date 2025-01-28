@@ -13,11 +13,10 @@ permalink: /leaderboard/
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #F4F4F4;
             text-align: center;
             padding: 20px;
         }
-
         .leaderboard {
             display: flex;
             justify-content: center;
@@ -25,7 +24,6 @@ permalink: /leaderboard/
             gap: 20px;
             margin-top: 50px;
         }
-
         .leaderboard .player {
             display: flex;
             flex-direction: column;
@@ -39,51 +37,40 @@ permalink: /leaderboard/
             padding: 10px;
             position: relative;
         }
-
         .leaderboard .player .star {
             position: absolute;
             top: -30px;
             font-size: 24px;
             color: gold;
         }
-
         .leaderboard .player:nth-child(2) .star {
             color: silver;
         }
-
         .leaderboard .player:nth-child(3) .star {
-            color: #cd7f32; /* Bronze */
+            color: #CD7F32; /* Bronze */
         }
-
         .player span {
             font-size: 14px;
         }
-
         .player .wins {
             font-size: 18px;
             font-weight: bold;
         }
-
         .player .name {
             margin-top: 10px;
         }
-
         .leaderboard .player {
             height: 150px; /* Default height for third place */
         }
-
         .leaderboard .player:nth-child(1) {
             height: 200px; /* Height for first place */
         }
-
         .leaderboard .player:nth-child(2) {
             height: 170px; /* Height for second place */
         }
-
         .runners-up {
             margin-top: 50px;
         }
-
         table {
             width: 80%;
             margin: 0 auto;
@@ -91,12 +78,10 @@ permalink: /leaderboard/
             background-color: white;
             text-align: left;
         }
-
         th, td {
             padding: 10px;
             border: 1px solid #ddd;
         }
-
         th {
             background-color: #222;
             color: white;
@@ -108,7 +93,7 @@ permalink: /leaderboard/
     <div class="leaderboard" id="leaderboard"></div>
     <div class="runners-up">
         <h2>Runners-Up</h2>
-        <table>
+        <table id="demo" class="table">
             <thead>
                 <tr>
                     <th>Rank</th>
@@ -116,10 +101,11 @@ permalink: /leaderboard/
                     <th>Wins</th>
                 </tr>
             </thead>
-            <tbody id="runners-up-table"></tbody>
+            <tbody id="scoreResult">
+                <!-- API data will be inserted here -->
+            </tbody>
         </table>
     </div>
-
     <script>
         // Static array of player data
         const players = [
@@ -137,7 +123,7 @@ permalink: /leaderboard/
 
         function updateLeaderboard() {
             const leaderboard = document.getElementById('leaderboard');
-            const runnersUpTable = document.getElementById('runners-up-table');
+            const runnersUpTable = document.getElementById('scoreResult');
             leaderboard.innerHTML = ''; // Clear existing content
             runnersUpTable.innerHTML = ''; // Clear existing table content
 
@@ -165,9 +151,85 @@ permalink: /leaderboard/
             });
         }
 
-        // Initial update of the leaderboard and runners-up table
+        // Fetch data from API and update the table
+        let scoreResultContainer = document.getElementById("scoreResult");
+        let scoreUrl = "http://127.0.0.1:8887/api/score";
+        let scoreOptions = {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'default',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        };
+
+        fetch(scoreUrl, scoreOptions)
+            .then(response => {
+                if (response.status !== 200) {
+                    console.error(response.status);
+                    return;
+                }
+                response.json().then(data => {
+                    console.log(data);
+                    for (const row of data.score) {
+                        const tr = document.createElement("tr");
+                        const rank = document.createElement("td");
+                        const player = document.createElement("td");
+                        const wins = document.createElement("td");
+                        rank.innerHTML = row.rank;
+                        player.innerHTML = row.player;
+                        wins.innerHTML = row.wins;
+                        tr.appendChild(rank);
+                        tr.appendChild(player);
+                        tr.appendChild(wins);
+                        scoreResultContainer.appendChild(tr);
+                    }
+                });
+            });
+
+        // Initial update of the static leaderboard
         updateLeaderboard();
     </script>
-
 </body>
 </html>
+
+<button onclick="refreshLeaderboard()" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; background-color: #222; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    Refresh Leaderboard
+</button>
+
+<script>
+  function refreshLeaderboard() {
+    // Clear existing table content
+    scoreResultContainer.innerHTML = '';
+    // Re-run the fetch to update the leaderboard
+    fetch(scoreUrl, scoreOptions)
+      .then(response => {
+        if (response.status !== 200) {
+          console.error("Failed request, status:", response.status);
+          return;
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data && data.score) {
+          for (const row of data.score) {
+            const tr = document.createElement("tr");
+            const rank = document.createElement("td");
+            const player = document.createElement("td");
+            const wins = document.createElement("td");
+            rank.innerHTML = row.rank;
+            player.innerHTML = row.player;
+            wins.innerHTML = row.wins;
+            tr.appendChild(rank);
+            tr.appendChild(player);
+            tr.appendChild(wins);
+            scoreResultContainer.appendChild(tr);
+          }
+        } else {
+          console.error("Data does not contain 'score':", data);
+        }
+      })
+      .catch(error => console.error("Fetch error:", error));
+  }
+</script>
