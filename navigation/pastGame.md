@@ -97,7 +97,7 @@ async function fetchPastGames() {
         <td>${game.elo}</td>
         <td>
           <button onclick="editRow(${game.id}, '${game.uid}', '${game.winner}', '${game.elo}')">Edit</button>
-          <button onclick="deletePastGame(${game.id})">Delete</button>
+          <button onclick="deletePastGame('${game.uid}')">Delete</button>
         </td>
       `;
       tableBody.appendChild(row);
@@ -203,36 +203,28 @@ async function updatePastGame(event) {
 
 
 
+// Delete a past game by UID
 async function deletePastGame(uid) {
   try {
-    // Send a POST request with "_method": "DELETE" in the body
+    // Send DELETE request to the backend with UID in the request body
     const response = await fetch(API_URL, {
-      method: "POST", // Use POST instead of DELETE
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        uid: uid,
-        _method: "DELETE", // Indicate the intended method
-      }),
+      body: JSON.stringify({ uid: uid }),
     });
 
     if (response.ok) {
       alert("Game Log deleted successfully!");
-      // Refresh the table or UI after deletion
-      fetchPastGames();
+      fetchPastGames(); // Refresh the table after deletion
     } else {
       const errorData = await response.json();
-      console.error("Error deleting game log:", errorData.message);
       alert(`Error: ${errorData.message}`);
     }
   } catch (error) {
-    console.error("An error occurred while deleting the game log:", error);
     alert("An unexpected error occurred. Please try again.");
   }
 }
-
-
-
 
 </script>
