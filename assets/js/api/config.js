@@ -17,7 +17,7 @@ if (location.hostname === "localhost") {
 
 export const fetchOptions = {
     method: 'GET', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors*', // no-cors, *cors, same-origin
+    mode: 'cors', // no-cors, *cors, same-origin
     cache: 'default', // *default, no-cache, reload, force-cache, only-if-cached
     credentials: 'include', // include, same-origin, omit
     headers: {
