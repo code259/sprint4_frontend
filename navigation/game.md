@@ -218,11 +218,12 @@ permalink: /game/
 		}
 </script>
 
-<script>
+<script type="module">
+	import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
   async function sendGameResult(userId, result) {
     try {
       // Send the POST request
-      const response = await fetch(`http://127.0.0.1:8887/api/user_stats/update_score`, {
+      const response = await fetch(`${pythonURI}/api/user_stats/update_score`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
