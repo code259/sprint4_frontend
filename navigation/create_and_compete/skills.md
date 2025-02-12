@@ -150,13 +150,21 @@ permalink: /skills/
     </table>
 </div>
 
-<script>
-    const API_URL = 'http://127.0.0.1:8887/api/skill'; // Replace with your actual API endpoint
+
+<script type="module">
+    import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
+
+    window.onload = function() {
+        fetchGames();
+    };
+
+//  <script>   
+//     const API_URL = 'http://127.0.0.1:8887/api/skill'; // Replace with your actual API endpoint
 
     // Fetch skills from the database and display them in the table (GET)
     async function fetchSkills() {
         try {
-            const response = await fetch(API_URL, { method: 'GET' });
+            const response = await fetch(`${pythonURI}/api/skill`, { method: 'GET' });
             if (!response.ok) throw new Error('Failed to fetch skills.');
 
             const skills = await response.json();
@@ -185,7 +193,7 @@ permalink: /skills/
             };
 
             try {
-                const response = await fetch(API_URL, {
+                const response = await fetch(`${pythonURI}/api/skill`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(newSkill),
@@ -252,7 +260,7 @@ permalink: /skills/
             };
 
             try {
-                const response = await fetch(`${API_URL}`, {
+                const response = await fetch(`${pythonURI}/api/skill`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(updatedSkill),
@@ -273,7 +281,7 @@ permalink: /skills/
     async function deleteRow(row, id) {
         if (confirm('Are you sure you want to delete this skill?')) {
             try {
-                const response = await fetch(`${API_URL}`, {
+                const response = await fetch(`${pythonURI}/api/skill`, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ id }),
