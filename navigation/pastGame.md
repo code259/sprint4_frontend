@@ -51,7 +51,7 @@ permalink: /pastGame/
       </tr>
     </thead>
     <tbody>
-      <!-- Data will be dynamically inserted here -->
+      <!-- data inserted here -->
     </tbody>
   </table>
 
@@ -74,157 +74,149 @@ permalink: /pastGame/
 </form>
 
 
-<script>
-// URL of the backend API
-const API_URL = "http://127.0.0.1:8887/api/pastgame";
+<script type="module">
+    import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
 
-// Fetch and display all past games
-async function fetchPastGames() {
-  try {
-    const response = await fetch(API_URL);
-    const data = await response.json();
-    console.log(data);
+    async function fetchPastGames() {
+        try {
+            const options = { ...fetchOptions };
+            options.method = "GET"; 
+            const response = await fetch(`${pythonURI}/api/pastgame`, options);
 
-    // Populate the table
-    const tableBody = document.querySelector("#pastGamesTable tbody");
-    tableBody.innerHTML = ""; // Clear existing rows
-    data.forEach((game) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${game.id}</td>
-        <td>${game.uid}</td>
-        <td>${game.winner}</td>
-        <td>${game.elo}</td>
-        <td>
-          <button onclick="editRow(${game.id}, '${game.uid}', '${game.winner}', '${game.elo}')">Edit</button>
-          <button onclick="deletePastGame('${game.uid}')">Delete</button>
-        </td>
-      `;
-      tableBody.appendChild(row);
-    });
-  } catch (error) {
-    console.error("Error fetching past games:", error);
-  }
-}
+            if (!response.ok) {
+                throw new Error('Failed to fetch past games: ' + response.statusText);
+            }
 
+            const data = await response.json();
+            console.log(data);
 
-function editRow(id, uid, winner, elo) {
-  // Populate the edit form with the current row's data
-  document.getElementById("editId").value = id;
-  document.getElementById("editUid").value = uid;
-  document.getElementById("editWinner").value = winner;
-  document.getElementById("editElo").value = elo;
-
-  // Show the edit form
-  document.getElementById("editGameForm").style.display = "block";
-}
-
-// Add a new game
-async function addPastGame(event) {
-  event.preventDefault(); // Prevent form submission
-
-  // Get form values
-  const uid = document.getElementById("uid").value;
-  const winner = document.getElementById("winner").value;
-  const elo = document.getElementById("elo").value;
-
-  // Prepare the data
-  const newGame = { uid, winner, elo };
-
-  try {
-    // Send POST request to the backend
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newGame),
-    });
-
-    if (response.ok) {
-      // Clear the form
-      document.getElementById("addGameForm").reset();
-
-      // Refresh the table
-      fetchPastGames();
-    } else {
-      const errorData = await response.json();
-      console.error("Error adding game:", errorData.message);
+            const tableBody = document.querySelector("#pastGamesTable tbody");
+            tableBody.innerHTML = ""; // Clear the existing rows
+            data.forEach((game) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${game.id}</td>
+                    <td>${game.uid}</td>
+                    <td>${game.winner}</td>
+                    <td>${game.elo}</td>
+                    <td>
+                        <button onclick="editRow(${game.id}, '${game.uid}', '${game.winner}', '${game.elo}')">Edit</button>
+                        <button onclick="deletePastGame('${game.uid}')">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Error fetching past games:", error);
+        }
     }
-  } catch (error) {
-    console.error("Error adding game:", error);
-  }
-}
 
-// Attach event listeners
-document.getElementById("addGameForm").addEventListener("submit", addPastGame);
-document.getElementById("editGameForm").addEventListener("submit", updatePastGame);
+    // Add a new game
+    async function addPastGame(event) {
+        event.preventDefault(); // this prevents form submission
 
-// Initial fetch
-fetchPastGames();
+        const uid = document.getElementById("uid").value;
+        const winner = document.getElementById("winner").value;
+        const elo = document.getElementById("elo").value;
 
+        const newGame = { uid, winner, elo };
 
-async function updatePastGame(event) {
-  event.preventDefault(); // Prevent the form from submitting normally
+        try {
+            const options = { ...fetchOptions };
+            options.method = "POST"; 
+            options.body = JSON.stringify(newGame); 
 
-  // Get form values
-  const id = document.getElementById("editId").value;
-  const uid = document.getElementById("editUid").value;
-  const winner = document.getElementById("editWinner").value;
-  const elo = document.getElementById("editElo").value;
+            const response = await fetch(`${pythonURI}/api/pastgame`, options);
 
-  // Prepare the data
-  const updatedGame = { id, uid, winner, elo };
+            if (response.ok) {
+                
+                document.getElementById("addGameForm").reset();
 
-  try {
-    // Send PUT request to the backend
-    const response = await fetch(`${API_URL}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedGame),
-    });
-
-    if (response.ok) {
-      // Hide the edit form
-      document.getElementById("editGameForm").style.display = "none";
-
-      // Refresh the table to show the updated data
-      fetchPastGames();
-    } else {
-      const errorData = await response.json();
-      console.error("Error updating game:", errorData.message);
+                
+                fetchPastGames();
+            } else {
+                const errorData = await response.json();
+                console.error("Error adding game:", errorData.message);
+            }
+        } catch (error) {
+            console.error("Error adding game:", error);
+        }
     }
-  } catch (error) {
-    console.error("Error updating game:", error);
-  }
-}
 
+    // Update a game
+    async function updatePastGame(event) {
+        event.preventDefault(); 
+        
+        const id = document.getElementById("editId").value;
+        const uid = document.getElementById("editUid").value;
+        const winner = document.getElementById("editWinner").value;
+        const elo = document.getElementById("editElo").value;
 
+        const updatedGame = { id, uid, winner, elo };
 
-// Delete a past game by UID
-async function deletePastGame(uid) {
-  try {
-    // Send DELETE request to the backend with UID in the request body
-    const response = await fetch(API_URL, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ uid: uid }),
-    });
+        try {
+            const options = { ...fetchOptions };
+            options.method = "PUT"; 
+            options.body = JSON.stringify(updatedGame); 
 
-    if (response.ok) {
-      alert("Game Log deleted successfully!");
-      fetchPastGames(); // Refresh the table after deletion
-    } else {
-      const errorData = await response.json();
-      alert(`Error: ${errorData.message}`);
+            const response = await fetch(`${pythonURI}/api/pastgame`, options);
+
+            if (response.ok) {
+                
+                document.getElementById("editGameForm").style.display = "none";
+
+                // refresh the datatable to show the updated data
+                fetchPastGames();
+            } else {
+                const errorData = await response.json();
+                console.error("Error updating game:", errorData.message);
+            }
+        } catch (error) {
+            console.error("Error updating game:", error);
+        }
     }
-  } catch (error) {
-    alert("An unexpected error occurred. Please try again.");
-  }
-}
 
+    // Delete a past game by UID
+    async function deletePastGame(uid) {
+        try {
+            const options = { ...fetchOptions };
+            options.method = "DELETE"; 
+            options.body = JSON.stringify({ uid: uid }); // Add the UID to the request body
+
+            const response = await fetch(`${pythonURI}/api/pastgame`, options);
+
+            if (response.ok) {
+                alert("Game Log deleted successfully!");
+                fetchPastGames(); // refresh the table after deletion
+            } else {
+                const errorData = await response.json();
+                alert(`Error: ${errorData.message}`);
+            }
+        } catch (error) {
+            alert("An unexpected error occurred. Please try again.");
+        }
+    }
+
+    // Function to edit a row
+    function editRow(id, uid, winner, elo) {
+        // Populate the edit form with the current row's data
+        document.getElementById("editId").value = id;
+        document.getElementById("editUid").value = uid;
+        document.getElementById("editWinner").value = winner;
+        document.getElementById("editElo").value = elo;
+
+        // Showing the user the edit form
+        document.getElementById("editGameForm").style.display = "block";
+    }
+
+    // global window object to make the onclick handlers access these functions globally
+    window.editRow = editRow;
+    window.deletePastGame = deletePastGame;
+
+    // Attaching event listeners
+    document.getElementById("addGameForm").addEventListener("submit", addPastGame);
+    document.getElementById("editGameForm").addEventListener("submit", updatePastGame);
+
+    // Initial fetch
+    fetchPastGames();
 </script>
