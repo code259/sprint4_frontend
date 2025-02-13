@@ -68,7 +68,7 @@ permalink: /analysis/
 			integrity="sha384-8Vi8VHwn3vjQ9eUHUxex3JSN/NFqUg3QbPyX8kWyb93+8AC/pPWTzj+nHtbC5bxD"
 			crossorigin="anonymous"></script>
 
-<script>
+<script type="module">
     const board = Chessboard('board', {
         position: 'start',
         draggable: false,
@@ -128,7 +128,8 @@ permalink: /analysis/
             });
     }
 
-    const pythonURI = 'http://127.0.0.1:8887/api/evaluation'; // Replace with your backend API URL
+    // const pythonURI = 'http://pawnsy.stu.nighthawkcodingsociety.com/api/evaluation'; // Replace with your backend API URL
+    import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
 
     // New Variables and Functions for Moves and Played Moves
     const movesTableBody = document.querySelector('#moves-table tbody');
@@ -138,7 +139,7 @@ permalink: /analysis/
     // Fetch all moves from the backend
     async function fetchMoves() {
         try {
-            const response = await fetch(pythonURI);
+            const response = await fetch(`${pythonURI}/api/evaluation`);
             const moves = await response.json();
             populateMovesTable(moves);
         } catch (error) {
@@ -172,7 +173,7 @@ permalink: /analysis/
         const evaluation = document.querySelector('#evaluation').value;
 
         try {
-            const response = await fetch(pythonURI, {
+            const response = await fetch(`${pythonURI}/api/evaluation`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -196,7 +197,7 @@ permalink: /analysis/
     // Mark move as played
     async function markAsPlayed(id, move) {
         try {
-            const response = await fetch(pythonURI, {
+            const response = await fetch(`${pythonURI}/api/evaluation`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: id, played: true }),
@@ -215,10 +216,12 @@ permalink: /analysis/
         }
     }
 
+    window.markAsPlayed = markAsPlayed;
+
     // Remove move
     async function removeMove(id) {
         try {
-            const response = await fetch(pythonURI, {
+            const response = await fetch(`${pythonURI}/api/evaluation`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id: id }),
@@ -233,6 +236,8 @@ permalink: /analysis/
             console.error('Error removing move:', error);
         }
     }
+
+    window.removeMove = removeMove;
 
     // Variable to store the last evaluation
     let lastEvaluation = 0.0;

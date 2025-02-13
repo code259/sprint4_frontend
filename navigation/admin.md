@@ -24,9 +24,10 @@ permalink: /admin/
   <div id="message" style="display: none; margin-top: 20px; padding: 10px; border-radius: 5px;"></div>
 </div>
 
-<script>
+<script type="module">
+  import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
   // Backend URI
-  const backendURI = "http://127.0.0.1:8887"; // Replace with your backend URL
+
 
   // Function to display messages
   function showMessage(type, text) {
@@ -53,7 +54,7 @@ permalink: /admin/
     }
 
     try {
-      const response = await fetch(`${backendURI}/api/admin/create_user`, {
+      const response = await fetch(`${pythonURI}/api/admin/create_user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -83,7 +84,7 @@ permalink: /admin/
     }
 
     try {
-      const response = await fetch(`${backendURI}/api/admin/delete_user`, {
+      const response = await fetch(`${pythonURI}/api/admin/delete_user`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
