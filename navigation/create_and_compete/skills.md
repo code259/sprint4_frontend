@@ -129,7 +129,6 @@ permalink: /skills/
 <div class="main">
     <!-- Input Form for Adding Skills -->
     <form class="input-form" id="addSkillForm">
-        <input type="text" id="idInput" placeholder="Skill ID" required />
         <input type="text" id="skillInput" placeholder="Skill Name" required />
         <input type="number" id="rankInput" placeholder="Level (1-10)" min="1" max="10" required />
         <button type="submit" id="addButton">Add Skill</button>
@@ -154,17 +153,10 @@ permalink: /skills/
 <script type="module">
     import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
 
-    window.onload = function() {
-        fetchGames();
-    };
-
-//  <script>   
-//     const API_URL = 'http://127.0.0.1:8887/api/skill'; // Replace with your actual API endpoint
-
     // Fetch skills from the database and display them in the table (GET)
     async function fetchSkills() {
         try {
-            const response = await fetch(`${pythonURI}/api/skill`, { method: 'GET' });
+            const response = await fetch(`${pythonURI}/api/skill`, fetchOptions);
             if (!response.ok) throw new Error('Failed to fetch skills.');
 
             const skills = await response.json();
@@ -177,19 +169,34 @@ permalink: /skills/
         }
     }
 
+    async function getUser() {
+        try {
+            const response = await fetch(`${pythonURI}/api/user`, fetchOptions);
+            if (!response.ok) throw new Error('Failed to fetch user.');
+
+            const user = await response.json();
+            console.log("all data", user)
+            console.log("id", user['id'])
+            return user['id']
+        } catch (error) {
+            console.error('Error fetching skills:', error);
+        }
+    }
+
     // Add a new skill to the database and table (POST)
     async function addSkill(event) {
         event.preventDefault(); // Prevent form submission
 
-        const idInput = document.getElementById('idInput').value.trim();
         const skillInput = document.getElementById('skillInput').value.trim();
         const rankInput = document.getElementById('rankInput').value.trim();
 
-        if (idInput && skillInput && rankInput) {
+        const userId = await getUser();
+
+        if (skillInput && rankInput) {
             const newSkill = {
                 skill_name: skillInput,
                 skill_level: rankInput,
-                user_id: parseInt(idInput, 10),
+                user_id: userId,
             };
 
             try {
@@ -205,8 +212,6 @@ permalink: /skills/
                 const result = await response.json();
                 addRowToTable(result.id, result.skill_name, result.skill_level);
 
-                // Clear input fields
-                document.getElementById('idInput').value = '';
                 document.getElementById('skillInput').value = '';
                 document.getElementById('rankInput').value = '';
             } catch (error) {
@@ -216,7 +221,7 @@ permalink: /skills/
     }
 
     // Add a new row to the table (helper function)
-    function addRowToTable(id, skillName, level) {
+    async function addRowToTable(id, skillName, level) {
         const table = document.getElementById('skillsTable');
         const row = table.insertRow();
 
@@ -231,7 +236,8 @@ permalink: /skills/
         const updateButton = document.createElement('button');
         updateButton.textContent = 'Update';
         updateButton.classList.add('update-button');
-        updateButton.onclick = () => updateRow(row, id);
+        const userId = await getUser();
+        updateButton.onclick = () => updateRow(row, id, userId);
 
         // Delete Button
         const deleteButton = document.createElement('button');
@@ -244,7 +250,7 @@ permalink: /skills/
     }
 
     // Update a skill in the database and table (PUT)
-    async function updateRow(row, id) {
+    async function updateRow(row, id, userId) {
         const skillCell = row.cells[1];
         const levelCell = row.cells[2];
 
@@ -256,7 +262,7 @@ permalink: /skills/
                 id: id,
                 skill_name: newSkillName.trim(),
                 skill_level: newLevel.trim(),
-                user_id: parseInt(id, 10),
+                user_id: userId,
             };
 
             try {
@@ -299,7 +305,7 @@ permalink: /skills/
 
     // Attach event listener to the form
     document.getElementById('addSkillForm').addEventListener('submit', addSkill);
+    fetchSkills();
+    getUser();
 
-    // Fetch skills on page load
-    window.onload = fetchSkills;
 </script>
