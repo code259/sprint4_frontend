@@ -79,15 +79,17 @@ permalink: /manager/
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    <h3>${game.name}</h3>
+                    <h2>${game.name}</h2>
+                    <h4>Played By: ${game.user_name}</h4>
+                    <br>
                     <p>${game.pgn}</p>
                     <button class="button update">Update</button>
                     <button class="button delete">Delete</button>
                     <button class="button analyze">Analyze</button>
                 `;
 
-                card.querySelector('.delete').addEventListener('click', () => deleteGame(game.id));
-                card.querySelector('.update').addEventListener('click', () => updateGame(game.id));
+                card.querySelector('.delete').addEventListener('click', () => deleteGame(game.id, game.user_name));
+                card.querySelector('.update').addEventListener('click', () => updateGame(game.id, game.user_name));
                 card.querySelector('.analyze').addEventListener('click', () => redirectToAnalyze(game.id));
                 container.appendChild(card);
             });
@@ -96,7 +98,25 @@ permalink: /manager/
         }
     }
 
-    async function deleteGame(id) {
+    async function getUser() {
+        try {
+            const response = await fetch(`${pythonURI}/api/user`, fetchOptions);
+            if (!response.ok) throw new Error('Failed to fetch user.');
+
+            const user = await response.json();
+            return user['name']
+        } catch (error) {
+            console.error('Error fetching skills:', error);
+        }
+    }
+
+    async function deleteGame(id, name) {
+        let user_name = await getUser();
+        if (user_name.toLowerCase() !== name.toLowerCase()) {
+            console.log('Logged in user cannot remove another users card')
+            return
+        }
+
         try {
             const response = await fetch(`${pythonURI}/api/pgn`, {
                 method: 'DELETE',
@@ -116,7 +136,13 @@ permalink: /manager/
         }
     }
 
-    async function updateGame(id) {
+    async function updateGame(id, name) {
+        let user_name = await getUser();
+        if (user_name.toLowerCase() !== name.toLowerCase()) {
+            console.log('Logged in user cannot update another users card')
+            return
+        }
+
         const newName = prompt("Enter the new name for the game:");
         try {
             const response = await fetch(`${pythonURI}/api/pgn`, {

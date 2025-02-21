@@ -173,15 +173,30 @@ permalink: /game/
 				return matchingMove ? matchingMove.san : null;
 		}
 
+		async function getUser() {
+			try {
+				const response = await fetch(`${pythonURI}/api/user`, fetchOptions);
+				if (!response.ok) throw new Error('Failed to fetch user.');
+
+				const user = await response.json();
+				console.log("all data", user)
+				console.log("id", user['id'])
+				return user['id']
+			} catch (error) {
+				console.error('Error fetching skills:', error);
+			}
+		}
+
 		async function makeGame(pgn) {
 			try {
+				const userId = await getUser();
 				const response = await fetch(`${pythonURI}/api/pgn`, {
 					method: 'POST',
 					headers: {
 						'Accept': 'application/json',
 						'Content-Type': 'application/json'
 					},
-					body: JSON.stringify({ pgn: pgn, date: '01/23/2025', name: 'placeholder', user_id: 3 })
+					body: JSON.stringify({ pgn: pgn, date: '01/23/2025', name: 'placeholder', user_id: userId})
 				});
 				if (!response.ok) {
 					throw new Error('Failed to delete: ' + response.statusText);
