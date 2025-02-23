@@ -56,6 +56,11 @@ permalink: /game/
 		}
 </style>
 
+<div id="noticeCard" style="background-color:rgb(255, 220, 78); color: #000; padding: 15px; text-align: center; font-weight: bold; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; justify-content: center;">
+  <span style="font-size: 1.2em; margin-right: 8px;">⚠️</span> 
+  <span id="noticeMessage">Must be signed in to save game to the public library, to play anonymously sign out.</span>
+</div>
+
 <h1 style="text-align:center;">Chess Practice</h1>
 <div class="container">
 	<div id="instructions">
@@ -74,18 +79,19 @@ permalink: /game/
 	</div>
 </div>
 
-<!-- Add this HTML to the bottom of your game page -->
-<div id="reportMenu" style="position: fixed; bottom: 0; width: 100%; background-color: black; color: white; border-top: 1px solid #ddd; padding: 10px;">
-  <div style="text-align: center;">
-    <h3 style="color: white;">Report Game Result</h3>
-    <label for="userIdInput" style="color: white;">User ID:</label>
-    <input type="number" id="userIdInput" placeholder="Enter your User ID" required style="margin-right: 10px; padding: 5px;">
-    <button id="reportWinButton" style="margin-right: 5px; background-color: #4caf50; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
-      Report Win
-    </button>
-    <button id="reportLossButton" style="background-color: #f44336; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer;">
-      Report Loss
-    </button>
+<div id="reportMenu" style="display: flex; justify-content: center; margin-top: 20px;">
+  <div style="background-color: #1e1e1e; color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-align: center; width: 350px;">
+    <h3 style="margin-bottom: 15px;">Report Game Result</h3>
+    <label for="userIdInput" style="display: block; margin-bottom: 8px;">User ID:</label>
+    <input type="number" id="userIdInput" placeholder="Enter your User ID" required style="width: 100%; padding: 8px; margin-bottom: 15px; border: none; border-radius: 5px; background-color: #2b2b2b; color: white;">
+    <div style="display: flex; gap: 10px; justify-content: center;">
+      <button id="reportWinButton" style="background-color: #4caf50; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 100%;">
+        Report Win
+      </button>
+      <button id="reportLossButton" style="background-color: #f44336; color: white; padding: 10px; border: none; border-radius: 5px; cursor: pointer; width: 100%;">
+        Report Loss
+      </button>
+    </div>
   </div>
 </div>
 
@@ -287,3 +293,16 @@ permalink: /game/
     await sendGameResult(userIdInput, "loss");
   };
 </script>
+
+<script>
+	// warning card disappears after 15 seconds
+    setTimeout(() => {
+        const noticeCard = document.getElementById("noticeCard");
+        if (noticeCard) {
+            noticeCard.style.transition = "opacity 0.5s ease-out";
+            noticeCard.style.opacity = "0";
+            setTimeout(() => noticeCard.style.display = "none", 500); 
+        }
+    }, 15000);
+</script>
+
