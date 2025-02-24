@@ -8,12 +8,12 @@ permalink: /skills/
     body {
         margin: 0;
         font-family: Arial, sans-serif;
-        background-color: black;
-        color: white;
+        background-color: #121212;
+        color: #E0E0E0;
     }
 
     header.page {
-        background-color: red;
+        background-color: #1A1A1A;
         padding: 20px;
         text-align: center;
         font-size: 24px;
@@ -25,7 +25,7 @@ permalink: /skills/
     .subtitle {
         margin-top: -10px;
         font-size: 16px;
-        color: #ddd;
+        color: #A0A0A0;
     }
 
     .main {
@@ -45,16 +45,16 @@ permalink: /skills/
     table td {
         padding: 10px;
         text-align: center;
-        border: 1px solid red;
+        border: 1px #A0A0A0;
     }
 
     table th {
-        background-color: darkred;
-        color: white;
+        background-color: #252525;
+        color: #E0E0E0;
     }
 
     table td {
-        background-color: #333;
+        background-color: #1E1E1E;
     }
 
     .input-form {
@@ -67,9 +67,9 @@ permalink: /skills/
     .input-form input {
         padding: 10px;
         font-size: 16px;
-        border: 1px solid red;
+        border: 1px solid #A0A0A0;
         border-radius: 5px;
-        background-color: #333;
+        background-color: #222222;
         color: white;
         outline: none;
     }
@@ -78,14 +78,14 @@ permalink: /skills/
         padding: 10px 20px;
         font-size: 16px;
         border: none;
-        background-color: red;
+        background-color: #5DADE2;
         color: white;
         border-radius: 5px;
         cursor: pointer;
     }
 
     .input-form button:hover {
-        background-color: darkred;
+        background-color: #4A90C2;
     }
 
     .action-buttons {
@@ -103,21 +103,21 @@ permalink: /skills/
     }
 
     .update-button {
-        background-color: #5a5a5a;
+        background-color: #3A3A3A;
         color: white;
     }
 
     .update-button:hover {
-        background-color: #6a6a6a;
+        background-color: #505050;
     }
 
     .delete-button {
-        background-color: red;
+        background-color: #8B0000;
         color: white;
     }
 
     .delete-button:hover {
-        background-color: darkred;
+        background-color:  #A00000;
     }
 </style>
 
