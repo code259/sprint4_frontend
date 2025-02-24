@@ -212,6 +212,47 @@ permalink: /game/
 			}
 		}
 
+		async function automaticUpdate() {
+			try {
+				const options = { ...fetchOptions };
+				options.method = "GET";
+				// Fetch all past games
+				const response = await fetch(`${pythonURI}/api/pastgame`, options);
+				if (!response.ok) throw new Error('Failed to fetch past games.');
+				const data = await response.json();
+				console.log(data);
+				// Select the first game (or modify logic as needed)
+				if (data.length > 0) {
+					const userId = await getUser();
+					const userGame = data.find(game => game.user_id === userId); // Filter games by user ID
+
+					const updatedLosses = userGame.number_of_losses + 1;                // Prepare the updated game data
+					const updatedGame = {
+						id: userGame.id,
+						user_id: userGame.user_id,
+						number_of_wins: userGame.number_of_wins,
+						number_of_losses: updatedLosses,
+					};
+					// Send the PUT request to update the game
+					const putOptions = { ...fetchOptions };
+					putOptions.method = "PUT";
+					putOptions.body = JSON.stringify(updatedGame);
+					const putResponse = await fetch(`${pythonURI}/api/pastgame`, putOptions);
+					if (putResponse.ok) {
+						console.log(`Game ID ${userGame.id} updated: Wins incremented to ${updatedWins}`);
+						fetchPastGames(); // Refresh the table to reflect the update
+					} else {
+						const errorData = await putResponse.json();
+						console.error("Error updating game:", errorData.message);
+					}
+				} else {
+					console.log("No games found to update.");
+				}
+			} catch (error) {
+				console.error("Error in automaticUpdate:", error);
+			}
+		}
+
 		async function makeComputerMove() {
 				var possibleMoves = game.moves()
 
@@ -232,6 +273,7 @@ permalink: /game/
 					const pgn = game.pgn();
 					console.log("pgn", pgn)
 					makeGame(pgn);
+					automaticUpdate();
 				}
 
 				game.move(convertedMove)
