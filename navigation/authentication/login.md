@@ -175,7 +175,7 @@ show_reading_time: false
                 return response.json();
             })
             .then(data => {
-                window.location.href = '{{site.baseurl}}/create_and_compete/realityroom-home';
+                window.location.href = '{{site.baseurl}}/manager';
             })
             .catch(error => {
                 console.error("Python Database Error:", error);
