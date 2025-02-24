@@ -45,9 +45,8 @@ permalink: /pastGame/
     <thead>
       <tr>
         <th>ID</th>
-        <th>User ID</th>
-        <th>Winner</th>
-        <th>ELO</th>
+        <th>User Name</th>
+        <th>Number of Wins</th>
       </tr>
     </thead>
     <tbody>
@@ -57,7 +56,6 @@ permalink: /pastGame/
 
   <h2>Add New Game</h2>
   <form id="addGameForm">
-    <input type="text" id="uid" placeholder="User ID" required />
     <input type="text" id="winner" placeholder="Winner" required />
     <input type="text" id="elo" placeholder="ELO" required />
     <button type="submit">Add Game</button>
@@ -77,10 +75,25 @@ permalink: /pastGame/
 <script type="module">
     import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
 
+    // Function to get the currently logged-in user
+    async function getUser() {
+        try {
+            const response = await fetch(`${pythonURI}/api/user`, fetchOptions);
+            if (!response.ok) throw new Error('Failed to fetch user.');
+
+            const user = await response.json();
+            console.log("Logged-in user data:", user);
+            return user['id']; // Return the user ID
+        } catch (error) {
+            console.error('Error fetching user:', error);
+        }
+    }
+
+    // Fetch and display past games
     async function fetchPastGames() {
         try {
             const options = { ...fetchOptions };
-            options.method = "GET"; 
+            options.method = "GET";
             const response = await fetch(`${pythonURI}/api/pastgame`, options);
 
             if (!response.ok) {
@@ -96,12 +109,13 @@ permalink: /pastGame/
                 const row = document.createElement("tr");
                 row.innerHTML = `
                     <td>${game.id}</td>
-                    <td>${game.uid}</td>
-                    <td>${game.winner}</td>
-                    <td>${game.elo}</td>
+                    <td>${game.user_id}</td>
+                    <td>${game.user_name}</td>
+                    <td>${game.number_of_wins}</td>
+                    <td>${game.number_of_losses}</td>
                     <td>
-                        <button onclick="editRow(${game.id}, '${game.uid}', '${game.winner}', '${game.elo}')">Edit</button>
-                        <button onclick="deletePastGame('${game.uid}')">Delete</button>
+                        <button onclick="editRow(${game.id}, '${game.user_id}', '${game.user_name}', '${game.number_of_wins}', '${game.number_of_losses}')">Edit</button>
+                        <button onclick="deletePastGame(${game.id}, '${game.user_id}')">Delete</button>
                     </td>
                 `;
                 tableBody.appendChild(row);
@@ -113,26 +127,23 @@ permalink: /pastGame/
 
     // Add a new game
     async function addPastGame(event) {
-        event.preventDefault(); // this prevents form submission
+        event.preventDefault();
+        const user_id = await getUser();
+        const user_name = document.getElementById("winner").value; // Assuming "winner" field is used for user_name
+        const number_of_wins = document.getElementById("elo").value; // Assuming "elo" is number_of_wins
+        const number_of_losses = 0; // Default value for new entries
 
-        const uid = document.getElementById("uid").value;
-        const winner = document.getElementById("winner").value;
-        const elo = document.getElementById("elo").value;
-
-        const newGame = { uid, winner, elo };
+        const newGame = { user_id, user_name, number_of_wins, number_of_losses };
 
         try {
             const options = { ...fetchOptions };
-            options.method = "POST"; 
-            options.body = JSON.stringify(newGame); 
+            options.method = "POST";
+            options.body = JSON.stringify(newGame);
 
             const response = await fetch(`${pythonURI}/api/pastgame`, options);
 
             if (response.ok) {
-                
                 document.getElementById("addGameForm").reset();
-
-                
                 fetchPastGames();
             } else {
                 const errorData = await response.json();
@@ -145,27 +156,31 @@ permalink: /pastGame/
 
     // Update a game
     async function updatePastGame(event) {
-        event.preventDefault(); 
-        
-        const id = document.getElementById("editId").value;
-        const uid = document.getElementById("editUid").value;
-        const winner = document.getElementById("editWinner").value;
-        const elo = document.getElementById("editElo").value;
+        event.preventDefault();
 
-        const updatedGame = { id, uid, winner, elo };
+        const id = document.getElementById("editId").value;
+        const user_id = document.getElementById("editUid").value;
+        const user_name = document.getElementById("editWinner").value;
+        const number_of_wins = document.getElementById("editElo").value;
+        const number_of_losses = 0; // Assuming edit doesn't include losses
+
+        const updatedGame = { id, user_id, user_name, number_of_wins, number_of_losses };
 
         try {
+            const loggedInUserId = await getUser();
+            if (loggedInUserId !== parseInt(user_id)) {
+                alert("You can only edit your own games.");
+                return;
+            }
+
             const options = { ...fetchOptions };
-            options.method = "PUT"; 
-            options.body = JSON.stringify(updatedGame); 
+            options.method = "PUT";
+            options.body = JSON.stringify(updatedGame);
 
             const response = await fetch(`${pythonURI}/api/pastgame`, options);
 
             if (response.ok) {
-                
                 document.getElementById("editGameForm").style.display = "none";
-
-                // refresh the datatable to show the updated data
                 fetchPastGames();
             } else {
                 const errorData = await response.json();
@@ -176,18 +191,24 @@ permalink: /pastGame/
         }
     }
 
-    // Delete a past game by UID
-    async function deletePastGame(uid) {
+    // Delete a past game
+    async function deletePastGame(id, user_id) {
         try {
+            const loggedInUserId = await getUser();
+            if (loggedInUserId !== parseInt(user_id)) {
+                alert("You can only delete your own games.");
+                return;
+            }
+
             const options = { ...fetchOptions };
-            options.method = "DELETE"; 
-            options.body = JSON.stringify({ uid: uid }); // Add the UID to the request body
+            options.method = "DELETE";
+            options.body = JSON.stringify({ id }); // Pass the game ID to delete
 
             const response = await fetch(`${pythonURI}/api/pastgame`, options);
 
             if (response.ok) {
-                alert("Game Log deleted successfully!");
-                fetchPastGames(); // refresh the table after deletion
+                alert("Game deleted successfully!");
+                fetchPastGames();
             } else {
                 const errorData = await response.json();
                 alert(`Error: ${errorData.message}`);
@@ -197,26 +218,73 @@ permalink: /pastGame/
         }
     }
 
-    // Function to edit a row
-    function editRow(id, uid, winner, elo) {
-        // Populate the edit form with the current row's data
-        document.getElementById("editId").value = id;
-        document.getElementById("editUid").value = uid;
-        document.getElementById("editWinner").value = winner;
-        document.getElementById("editElo").value = elo;
+    // Function to automatically update a game
+    async function automaticUpdate() {
+        try {
+            const options = { ...fetchOptions };
+            options.method = "GET";
+            // Fetch all past games
+            const response = await fetch(`${pythonURI}/api/pastgame`, options);
+            if (!response.ok) throw new Error('Failed to fetch past games.');
+            const data = await response.json();
+            console.log(data);
+            // Select the first game (or modify logic as needed)
+            if (data.length > 0) {
+                const userId = await getUser();
+                const userGame = data.find(game => game.user_id === userId); // Filter games by user ID
 
-        // Showing the user the edit form
+                const updatedWins = userGame.number_of_wins + 1;                // Prepare the updated game data
+                const updatedGame = {
+                    id: userGame.id,
+                    user_id: userGame.user_id,
+                    number_of_wins: updatedWins,
+                    number_of_losses: userGame.number_of_losses,
+                };
+                // Send the PUT request to update the game
+                const putOptions = { ...fetchOptions };
+                putOptions.method = "PUT";
+                putOptions.body = JSON.stringify(updatedGame);
+                const putResponse = await fetch(`${pythonURI}/api/pastgame`, putOptions);
+                if (putResponse.ok) {
+                    console.log(`Game ID ${userGame.id} updated: Wins incremented to ${updatedWins}`);
+                    fetchPastGames(); // Refresh the table to reflect the update
+                } else {
+                    const errorData = await putResponse.json();
+                    console.error("Error updating game:", errorData.message);
+                }
+            } else {
+                console.log("No games found to update.");
+            }
+        } catch (error) {
+            console.error("Error in automaticUpdate:", error);
+        }
+    }
+
+    // Call the automaticUpdate function on page load
+         
+
+    // Fetch and display the games on page load
+    fetchPastGames();
+
+    // Function to edit a row
+    function editRow(id, user_id, user_name, number_of_wins, number_of_losses) {
+        document.getElementById("editId").value = id;
+        document.getElementById("editUid").value = user_id;
+        document.getElementById("editWinner").value = user_name;
+        document.getElementById("editElo").value = number_of_wins;
+
         document.getElementById("editGameForm").style.display = "block";
     }
 
-    // global window object to make the onclick handlers access these functions globally
+    // Attach global functions to the window object for onclick handlers
     window.editRow = editRow;
     window.deletePastGame = deletePastGame;
 
-    // Attaching event listeners
+    // Attach event listeners
     document.getElementById("addGameForm").addEventListener("submit", addPastGame);
     document.getElementById("editGameForm").addEventListener("submit", updatePastGame);
 
     // Initial fetch
     fetchPastGames();
+
 </script>
