@@ -45,8 +45,10 @@ permalink: /pastGame/
     <thead>
       <tr>
         <th>ID</th>
-        <th>User Name</th>
+        <th>User ID</th>
+        <th>Name</th>
         <th>Number of Wins</th>
+        <th>Number of Losses</th>
       </tr>
     </thead>
     <tbody>
