@@ -233,12 +233,12 @@ permalink: /pastGame/
                 const userId = await getUser();
                 const userGame = data.find(game => game.user_id === userId); // Filter games by user ID
 
-                const updatedWins = userGame.number_of_wins + 1;                // Prepare the updated game data
+                const updatedLosses = userGame.number_of_losses + 1;                // Prepare the updated game data
                 const updatedGame = {
                     id: userGame.id,
                     user_id: userGame.user_id,
-                    number_of_wins: updatedWins,
-                    number_of_losses: userGame.number_of_losses,
+                    number_of_wins: userGame.number_of_wins,
+                    number_of_losses: updatedLosses,
                 };
                 // Send the PUT request to update the game
                 const putOptions = { ...fetchOptions };
