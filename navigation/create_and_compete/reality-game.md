@@ -1,18 +1,10 @@
 ---
 layout: base
-title: Create and Compete - Reality Room Game
+title: Pawnsy Bot
 search_exclude: true
 permalink: /create_and_compete/reality_game
 author: Yash, Nikhil, Rohan, Neil
 ---
-
-<div class="sidebar">
-    <a href="/sprint4_frontend/create_and_compete/realityroom-home" class="sidebar-btn">🏠 Home</a>
-    <a href="/sprint4_frontend/create_and_compete/reality_game" class="sidebar-btn">🎮 Game</a>
-    <a href="/sprint4_frontend/create_and_compete/reality-room-about" class="sidebar-btn">❓ About</a>
-    <a href="/sprint4_frontend/create_and_compete/reality-room-terms" class="sidebar-btn">📄 Terms</a>
-    <a href="/sprint4_frontend/create_and_compete/reality-room-leaderboard" class="sidebar-btn">🎖️ Leaderboard</a>
-</div>
 
 <style>
     body {
@@ -66,22 +58,14 @@ author: Yash, Nikhil, Rohan, Neil
     <!-- Instructions Frame with Buttons Below -->
     <div class="instructions-frame">
         <div class="instructions-box">
-            <h3>Game Instructions</h3>
-            <p>Welcome to the Reality Room Game! Here are the instructions to get you started:</p>
+            <h3>Chat Instructions</h3>
+            <p>Welcome to the Pawnsy Chatroom! Here are the rules to get you started:</p>
             <ul>
                 <li>Use the chat to interact with the AI.</li>
-                <li>Try to figure out if you're chatting with a human or an AI!</li>
-                <li>Submit your guess at the end of the game.</li>
-                <li>Have fun and see if you can outsmart the AI!</li>
+                <li>Refrain from using any profanity when chatting with the bot!</li>
+                <li>Refrain from sending any explicit photos.</li>
+                <li>Have fun and try to learn something!</li>
             </ul>
-            <p id="score">Score:</p>
-        </div>
-    </div>
-    <div id="guessPrompt" style="display: none;">
-        <p class="modal-text">Who do you think you've been chatting with? Choose one:</p>
-        <div class="guess-options">
-            <button class="guess-button" onclick="submitGuess('human')">Human</button>
-            <button class="guess-button" onclick="submitGuess('ai')">AI</button>
         </div>
     </div>
 </div>

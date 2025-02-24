@@ -86,16 +86,41 @@ permalink: /manager/
                     <button class="button update">Update</button>
                     <button class="button delete">Delete</button>
                     <button class="button analyze">Analyze</button>
+                    <button class="button download">Download PGN File</button>
                 `;
 
                 card.querySelector('.delete').addEventListener('click', () => deleteGame(game.id, game.user_name));
                 card.querySelector('.update').addEventListener('click', () => updateGame(game.id, game.user_name));
-                card.querySelector('.analyze').addEventListener('click', () => redirectToAnalyze(game.id));
+                card.querySelector('.analyze').addEventListener('click', () => redirectToAnalyze());
+                card.querySelector('.download').addEventListener('click', () => downloadFile(game.pgn));
                 container.appendChild(card);
             });
         } catch (error) {
             console.error('Error fetching entries:', error);
         }
+    }
+
+    async function downloadFile(moves) {
+        console.log("Downloading moves as PGN file!")
+        const pgnContent = `[Event "Casual Game"]
+[Site "Unknown"]
+[Date "2025.02.23"]
+[Round "1"]
+[White "Player1"]
+[Black "Player2"]
+[Result "*"]
+
+${moves}`;
+
+        const blob = new Blob([pgnContent], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "game.pgn";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
     }
 
     async function getUser() {
@@ -163,7 +188,7 @@ permalink: /manager/
         }
     }
 
-    function redirectToAnalyze(id) {
-        window.location.href = `/sprint4_frontend/analysis?id=${id}`;
+    function redirectToAnalyze() {
+        window.location.href = `/sprint4_frontend/analysis`;
     }
 </script>
