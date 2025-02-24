@@ -1,26 +1,16 @@
 ---
 layout: base
-title: Create and Compete - Reality Room
+title: Post
 search_exclude: true
-permalink: /create_and_compete/realityroom-home
+permalink: /post
 author: Yash, Nikhil, Rohan, Neil
 ---
 
-<div class="sidebar" id="sidebar">
-    <a href="/sprint4_frontend/create_and_compete/realityroom-home" class="sidebar-btn">🏠 Home</a>
-    <a href="/sprint4_frontend/create_and_compete/reality_game" class="sidebar-btn">🎮 Game</a>
-    <a href="/sprint4_frontend/create_and_compete/reality-room-about" class="sidebar-btn">❓ About</a>
-    <a href="/sprint4_frontend/create_and_compete/reality-room-terms" class="sidebar-btn">📄 Terms</a>
-</div>
-
 <div class="main">
     <div class="content">
-        <h2 id="header-title">Channels</h2>
+        <h2 id="header-title">Chess Talk</h2>
         <div id="friends-container" class="friends-container">
             <div class="friend">
-                <div class="profile-pic"><img src="https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Irma"></div>
-                <p>Irma</p>
-                <span class="live-badge">Live</span>
             </div>
         </div>
         <div id="form-container" class="form-container">
@@ -93,27 +83,11 @@ author: Yash, Nikhil, Rohan, Neil
     window.onload = initializePage;
 </script>
 
-
-<div class="sidebar">
-    <a href="/flocker_frontend/create_and_compete/realityroom-home" class="sidebar-btn">🏠 Home</a>
-    <a href="/flocker_frontend/create_and_compete/reality_game" class="sidebar-btn">🎮 Game</a>
-    <a href="/flocker_frontend/create_and_compete/reality-room-about" class="sidebar-btn">❓ About</a>
-    <a href="/flocker_frontend/create_and_compete/reality-room-terms" class="sidebar-btn">📄 Terms</a>
-     <a href="/sprint4_frontend/create_and_compete/reality-room-leaderboard" class="sidebar-btn">🎖️ Leaderboard</a>
-</div>
-
-
-
-<div id="sidebar" class="sidebar" style="display: none;"></div>
-
 <div class="main">
     <div class="content">
         <h2 id="header-title" style="display: none;">Channels</h2>
         <div id="friends-container" class="friends-container" style="display: none;">
             <div class="friend">
-                <div class="profile-pic"><img src="https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Irma"></div>
-                <p>Irma</p>
-                <span class="live-badge">Live</span>
             </div>
         </div>
         <div id="form-container" class="form-container" style="display: none;">
@@ -130,8 +104,6 @@ author: Yash, Nikhil, Rohan, Neil
         <div id="channels"></div>
     </div>
 </div>
-
-<div id="imageTest"></div>
 
 <script type="module">
     import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
@@ -196,92 +168,6 @@ author: Yash, Nikhil, Rohan, Neil
     window.onload = initializePage;
 </script>
 
-<script>
-    <div id="sidebar"></div>
-    <div class="content">
-        <h2>Channels</h2>
-        <div class="friends-container">
-            <!-- <div class="friend">
-                <div class="profile-pic"><img src="https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Irma"></div>
-                <p>Irma</p>
-                <span class="live-badge">Live</span>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Amanda"></div>
-                <p>Amanda</p>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Luiz"></div>
-                <p>Luiz</p>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Adam"></div>
-                <p>Nina</p>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1496672254107-b07a26403885?q=80&w=2788&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Irma"></div>
-                <p>Izaa</p>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Irma"></div>
-                <p>Irma</p>
-                <span class="live-badge">Live</span>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Amanda"></div>
-                <p>Amanda</p>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Luiz"></div>
-                <p>Luiz</p>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Adam"></div>
-                <p>Nina</p>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1496672254107-b07a26403885?q=80&w=2788&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Irma"></div>
-                <p>Izaa</p>
-            </div>
-           <div class="friend">
-                <div class="profile-pic"><img src="https://plus.unsplash.com/premium_photo-1671656349322-41de944d259b?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Irma"></div>
-                <p>Irma</p>
-                <span class="live-badge">Live</span>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Amanda"></div>
-                <p>Amanda</p>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=2787&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Luiz"></div>
-                <p>Luiz</p>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Adam"></div>
-                <p>Nina</p>
-            </div>
-            <div class="friend">
-                <div class="profile-pic"><img src="https://images.unsplash.com/photo-1496672254107-b07a26403885?q=80&w=2788&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Irma"></div>
-                <p>Izaa</p>
-            </div> -->
-        </div>
-        <div class="form-container">
-            <form id="channelForm">
-                <div class="form-inputs">
-                    <input type="text" id="title" name="title" placeholder="Enter Title Here" required>
-                    <input type="file" id="fileInput" name="fileInput" style="display: none;">
-                    <button type="button" onclick="document.getElementById('fileInput').click()" class="file-button">➕</button>
-                </div>
-                <textarea id="textArea" name="textArea" placeholder="Post Here" required></textarea>
-                <button type="submit">Post</button>
-            </form>
-        </div>
-        <div id="channels"></div>
-    <div>
-</div>
-<div id="imageTest"></div>
-
-</script>
 <style>
     /* Sidebar */
     .sidebar {
@@ -494,53 +380,6 @@ author: Yash, Nikhil, Rohan, Neil
         background-color: #ff1a1a;
     }
 </style>
-
-<script type="module">
-    // this is for the images
-    // import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
-    // const fileInput = document.getElementById('fileInput');
-    // const file = fileInput.files[0];
-    // if (file) {
-    //     const reader = new FileReader();
-    //     reader.onload = function() {
-    //         const imageTest = document.getElementById('imageTest');
-    //         imageTest.innerHTML = `<img src="${reader.result}" alt="Profile Picture">`;
-    //     };
-    //     reader.readAsDataURL(file);
-    // }
-
-
-
-
-    // async function sendProfilePicture(base64String) {
-    // const URL = pythonURI + "/api/id/pfp";
-
-    // const options = {
-    //     URL,
-    //     body: { pfp: base64String },
-    //     message: 'profile-message',
-    //     callback: () => {
-    //         console.log('Profile picture uploaded successfully!');
-    //     }
-    // };
-
-    // try {
-    //     await putUpdate(options);
-    // } catch (error) {
-    //     console.error('Error uploading profile picture:', error.message);
-    //     document.getElementById('profile-message').textContent = 'Error uploading profile picture: ' + error.message;
-    // }
-    // }
-
-    // async function convertToBase64(file) {
-    //     return new Promise((resolve, reject) => {
-    //         const reader = new FileReader();
-    //         reader.onload = () => resolve(reader.result.split(',')[1]); // Remove the prefix part of the result
-    //         reader.onerror = error => reject(error);
-    //         reader.readAsDataURL(file);
-    //     });
-    // }
-</script>
 
 <script type="module">
     import { pythonURI, fetchOptions } from '../assets/js/api/config.js';
