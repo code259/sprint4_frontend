@@ -312,7 +312,7 @@ author: Yash, Nikhil, Rohan, Neil
     window.onload = displayTrickyMessage;
 
     async function sendToGeminiAPI(userMessage) {
-        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyDjj6P4sj4Qwh3rQKquckjjcdtGo9HKOAw";
+        const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=AIzaSyBDqaQG_M3Df7K0Y4bZPO-dAFTDTdI26Hk";
 
         try {
             const response = await fetch(apiUrl, {
