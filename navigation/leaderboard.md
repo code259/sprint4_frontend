@@ -233,3 +233,4 @@ permalink: /leaderboard/
       .catch(error => console.error("Fetch error:", error));
   }
 </script>
+
