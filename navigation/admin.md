@@ -1,105 +1,165 @@
 ---
 layout: base
-title: Admin Panle
+title: Admin Panel
 search_exclude: true
 permalink: /admin/
 ---
 
-<div style="max-width: 600px; margin: 50px auto; background-color: #f8f9fa; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-  <h1 style="text-align: center; color: #333;">Admin Panel</h1>
+<h1>Admin Page: Update User Wins/Losses</h1>
 
-  <!-- Section for creating a user -->
-  <h3 style="color: #333;">Create User</h3>
-  <input type="number" id="createUserId" placeholder="Enter User ID" style="width: 100%; margin: 10px 0; padding: 10px; font-size: 16px;">
-  <input type="number" id="createWins" placeholder="Enter Wins (optional)" style="width: 100%; margin: 10px 0; padding: 10px; font-size: 16px;">
-  <input type="number" id="createLosses" placeholder="Enter Losses (optional)" style="width: 100%; margin: 10px 0; padding: 10px; font-size: 16px;">
-  <button id="createUserBtn" style="width: 100%; margin: 10px 0; padding: 10px; font-size: 16px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">Create User</button>
-
-  <!-- Section for deleting a user -->
-  <h3 style="color: #333;">Delete User</h3>
-  <input type="number" id="deleteUserId" placeholder="Enter User ID" style="width: 100%; margin: 10px 0; padding: 10px; font-size: 16px;">
-  <button id="deleteUserBtn" style="width: 100%; margin: 10px 0; padding: 10px; font-size: 16px; background-color: #f44336; color: white; border: none; border-radius: 5px; cursor: pointer;">Delete User</button>
-
-  <!-- Message display -->
-  <div id="message" style="display: none; margin-top: 20px; padding: 10px; border-radius: 5px;"></div>
+<!-- Container for the typeahead search -->
+<div>
+  <label for="userSearch">Search User:</label>
+  <input type="text" id="userSearch" placeholder="Type to search user..." autocomplete="off">
+  <div id="suggestions" style="border: 1px solid #ccc; display: none; position: absolute; background: #fff; z-index: 999;">
+    <!-- Suggestions will appear here -->
+  </div>
 </div>
 
-<script type="module">
-  import { pythonURI, fetchOptions } from '/sprint4_frontend/assets/js/api/config.js';
-  // Backend URI
+<!-- Form to display and update user data -->
+<div id="editForm" style="margin-top:20px; display:none;">
+  <h3 id="selectedUser"></h3>
+  <label for="wins">Wins:</label>
+  <input type="number" id="wins" min="0" value="0">
+  <br><br>
+  <label for="losses">Losses:</label>
+  <input type="number" id="losses" min="0" value="0">
+  <br><br>
+  <button id="updateButton">Update</button>
+</div>
 
+<script>
+  // -------------------------------
+  // 1. Configuration & Data
+  // -------------------------------
+  // Adjust these URLs to match your setup.
+  // Endpoint to get all users (should return a JSON array of users).
+  const FETCH_USERS_URL = 'http://127.0.0.1:8401/api/user/all'; 
+  // Endpoint to update a user's wins/losses in the pastGame table.
+  const UPDATE_USER_URL = 'http://127.0.0.1:8401/api/admin/update_stats'; 
 
-  // Function to display messages
-  function showMessage(type, text) {
-    const messageDiv = document.getElementById('message');
-    messageDiv.style.display = "block";
-    messageDiv.style.backgroundColor = type === "success" ? "#d4edda" : "#f8d7da";
-    messageDiv.style.color = type === "success" ? "#155724" : "#721c24";
-    messageDiv.textContent = text;
+  let allUsers = [];        // Will store the entire list of users
+  let selectedUser = null;  // The user object currently selected
 
-    setTimeout(() => {
-      messageDiv.style.display = "none";
-    }, 5000);
-  }
+  // -------------------------------
+  // 2. Fetch All Users for the Dropdown
+  // -------------------------------
+  fetch(FETCH_USERS_URL, {
+      method: 'GET',
+      credentials: 'include'  // Send cookies with the request
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Failed to fetch users: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      allUsers = data; // Store the list of users in memory
+    })
+    .catch(err => console.error('Error fetching users:', err));
 
-  // Event listener for creating a user
-  document.getElementById("createUserBtn").addEventListener("click", async () => {
-    const userId = document.getElementById("createUserId").value;
-    const wins = document.getElementById("createWins").value || 0;
-    const losses = document.getElementById("createLosses").value || 0;
+  // -------------------------------
+  // 3. Typeahead Logic
+  // -------------------------------
+  const userSearchInput = document.getElementById('userSearch');
+  const suggestionsDiv = document.getElementById('suggestions');
+  const editFormDiv = document.getElementById('editForm');
+  const selectedUserHeader = document.getElementById('selectedUser');
+  const winsInput = document.getElementById('wins');
+  const lossesInput = document.getElementById('losses');
+  const updateButton = document.getElementById('updateButton');
 
-    if (!userId) {
-      showMessage("error", "User ID is required.");
+  // Show filtered suggestions as user types
+  userSearchInput.addEventListener('input', () => {
+    const query = userSearchInput.value.toLowerCase();
+    if (!query) {
+      suggestionsDiv.style.display = 'none';
+      return;
+    }
+    
+    // Filter allUsers by name or uid
+    const filtered = allUsers.filter(user => {
+      const userName = user.name ? user.name.toLowerCase() : '';
+      const userUid  = user.uid  ? user.uid.toLowerCase()  : '';
+      return userName.includes(query) || userUid.includes(query);
+    });
+
+    if (filtered.length === 0) {
+      suggestionsDiv.style.display = 'none';
       return;
     }
 
-    try {
-      const response = await fetch(`${pythonURI}/api/admin/create_user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_id: parseInt(userId), wins: parseInt(wins), losses: parseInt(losses) }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        showMessage("success", "User created successfully.");
-      } else {
-        showMessage("error", data.error || "Failed to create user.");
-      }
-    } catch (error) {
-    console.error("Error details:", error);
-    showMessage("error", `An error occurred: ${error.message}`);
-    }
+    // Build suggestions list
+    let html = '';
+    filtered.forEach(u => {
+      html += `<div class="suggestion-item" style="padding: 5px; cursor: pointer;" data-uid="${u.uid}">
+                 ${u.name} (${u.uid})
+               </div>`;
+    });
+    suggestionsDiv.innerHTML = html;
+    suggestionsDiv.style.display = 'block';
   });
 
-  // Event listener for deleting a user
-  document.getElementById("deleteUserBtn").addEventListener("click", async () => {
-    const userId = document.getElementById("deleteUserId").value;
+  // When a suggestion is clicked, fill the form
+  suggestionsDiv.addEventListener('click', (e) => {
+    const item = e.target.closest('.suggestion-item');
+    if (!item) return;
+    
+    const uid = item.getAttribute('data-uid');
+    const userObj = allUsers.find(u => u.uid === uid);
+    if (!userObj) return;
 
-    if (!userId) {
-      showMessage("error", "User ID is required.");
+    selectedUser = userObj;
+    userSearchInput.value = `${userObj.name} (${userObj.uid})`;
+    suggestionsDiv.style.display = 'none';
+
+    // If wins/losses are part of the user data, fill them in (adjust as needed)
+    const existingWins = userObj.wins || 0;
+    const existingLosses = userObj.losses || 0;
+    winsInput.value = existingWins;
+    lossesInput.value = existingLosses;
+
+    selectedUserHeader.textContent = `Editing: ${userObj.name} (${userObj.uid})`;
+    editFormDiv.style.display = 'block';
+  });
+
+  // -------------------------------
+  // 4. Submit Button Logic to Update Stats
+  // -------------------------------
+  updateButton.addEventListener('click', () => {
+    if (!selectedUser) {
+      alert('No user selected!');
       return;
     }
+    const newWins   = parseInt(winsInput.value) || 0;
+    const newLosses = parseInt(lossesInput.value) || 0;
 
-    try {
-      const response = await fetch(`${pythonURI}/api/admin/delete_user`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user_id: parseInt(userId) }),
+    const payload = {
+      user_uid: selectedUser.uid,
+      number_of_wins: newWins,
+      number_of_losses: newLosses
+    };
+
+    fetch(UPDATE_USER_URL, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',  // Send cookies with the request
+      body: JSON.stringify(payload)
+    })
+      .then(res => {
+        if (!res.ok) throw new Error(`Status: ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        alert('User stats updated successfully!');
+        console.log('Update response:', data);
+      })
+      .catch(err => {
+        console.error('Error updating user:', err);
+        alert('Error updating user stats!');
       });
-
-      const data = await response.json();
-      if (response.ok) {
-        showMessage("success", `User with ID ${userId} deleted successfully.`);
-      } else {
-        showMessage("error", data.error || "Failed to delete user.");
-      }
-    } catch (error) {
-      showMessage("error", "An error occurred. Please try again.");
-    }
   });
 </script>
