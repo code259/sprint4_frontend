@@ -204,7 +204,7 @@ permalink: /pastGame/
 
             const options = { ...fetchOptions };
             options.method = "DELETE";
-            options.body = JSON.stringify({ id }); // Pass the game ID to delete
+            options.body = JSON.stringify({"user_id": id }); // Pass the game ID to delete
 
             const response = await fetch(`${pythonURI}/api/pastgame`, options);
 
