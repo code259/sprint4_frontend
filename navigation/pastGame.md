@@ -1,6 +1,6 @@
 ---
 layout: base
-title: 
+title: Chess Past Games
 search_exclude: true
 permalink: /pastGame/
 ---
