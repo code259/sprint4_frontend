@@ -2,7 +2,7 @@
 layout: base
 title: Admin Panel
 search_exclude: true
-permalink: /admin/
+permalink: /admin_page/
 ---
 
 <h1>Admin Page: Update User Wins/Losses</h1>
