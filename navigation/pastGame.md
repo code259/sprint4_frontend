@@ -1,6 +1,6 @@
 ---
 layout: base
-title: 
+title: Chess Past Games
 search_exclude: true
 permalink: /pastGame/
 ---
@@ -58,8 +58,8 @@ permalink: /pastGame/
 
   <h2>Add New Game</h2>
   <form id="addGameForm">
-    <input type="text" id="winner" placeholder="Winner" required />
-    <input type="text" id="elo" placeholder="ELO" required />
+    <input type="text" id="winner" placeholder="Wins" required />
+    <input type="text" id="elo" placeholder="Losses" required />
     <button type="submit">Add Game</button>
   </form>
 </body>
@@ -204,7 +204,7 @@ permalink: /pastGame/
 
             const options = { ...fetchOptions };
             options.method = "DELETE";
-            options.body = JSON.stringify({ id }); // Pass the game ID to delete
+            options.body = JSON.stringify({"user_id": id }); // Pass the game ID to delete
 
             const response = await fetch(`${pythonURI}/api/pastgame`, options);
 

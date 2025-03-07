@@ -24,3 +24,11 @@ minima:
       - navigation/skills.md
       - navigation/leaderboard.md
       - navigation/wiki.md
+header_pages:
+  - navigation/create_and_compete/reality-game.md
+  - navigation/game.md
+  - navigation/manager.md
+  - navigation/skills.md
+  - navigation/pastGame.md
+  - navigation/leaderboard.md
+  - navigation/wiki.md
